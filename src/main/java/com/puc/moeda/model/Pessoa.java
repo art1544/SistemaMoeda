@@ -1,19 +1,29 @@
-package com.puc.moeda.dto;
+package com.puc.moeda.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.puc.moeda.model.TipoPessoa;
 import com.puc.moeda.validation.CPF;
-import com.puc.moeda.validation.Email;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
-public class PessoaDTO {
+@Entity
+@Table(name = "pessoas")
+public class Pessoa {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @NotBlank(message = "O CPF é obrigatório")
     @CPF
     private String cpf;
     
@@ -21,7 +31,6 @@ public class PessoaDTO {
     private String nome;
     
     @NotBlank(message = "O email é obrigatório")
-    @Email(message = "Email inválido")
     private String email;
     
     @NotBlank(message = "A senha é obrigatória")
@@ -31,17 +40,18 @@ public class PessoaDTO {
     private LocalDate dataNasc;
     
     @NotNull(message = "O tipo de pessoa é obrigatório")
+    @Enumerated(EnumType.STRING)
     private TipoPessoa tipo;
     
     private BigDecimal saldo = BigDecimal.ZERO;
     
     // Construtor padrão
-    public PessoaDTO() {
+    public Pessoa() {
     }
     
     // Construtor com todos os campos
-    public PessoaDTO(Long id, String cpf, String nome, String email, String senha, 
-                    LocalDate dataNasc, TipoPessoa tipo) {
+    public Pessoa(Long id, String cpf, String nome, String email, String senha, 
+                 LocalDate dataNasc, TipoPessoa tipo) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
@@ -116,4 +126,4 @@ public class PessoaDTO {
     public void setSaldo(BigDecimal saldo) {
         this.saldo = saldo;
     }
-}
+} 

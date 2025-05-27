@@ -1,3 +1,9 @@
+package com.puc.moeda.validator;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import com.puc.moeda.validation.CPF;
+
 public class ValidarCPF implements ConstraintValidator<CPF, String> {
     @Override
     public boolean isValid(String cpf, ConstraintValidatorContext context) {
