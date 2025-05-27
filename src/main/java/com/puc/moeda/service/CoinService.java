@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID; // For generating redemption codes
+import java.util.UUID;
 
 @Service
 public class CoinService {
@@ -78,7 +78,7 @@ public class CoinService {
     }
 
     @Transactional
-    public void redeemAdvantage(Long studentId, RedeemAdvantageDTO redeemRequest) {
+    public Transaction redeemAdvantage(Long studentId, RedeemAdvantageDTO redeemRequest) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found")); // TODO: Custom exception
 
@@ -103,11 +103,10 @@ public class CoinService {
         transaction.setReason("Resgate: " + advantage.getName());
         transaction.setTimestamp(LocalDateTime.now());
         transaction.setAdvantage(advantage);
-        transactionRepository.save(transaction);
-
-        // Generate redemption code
-        String redemptionCode = UUID.randomUUID().toString();
-        // TODO: Store this redemption code in the transaction or a separate entity for validation by the company
+        transaction.setRedemptionCode(UUID.randomUUID().toString()); // Generate and save the code
+        transaction.setUsed(false); // Mark as not used initially
+        // usedAt is null initially
+        Transaction savedTransaction = transactionRepository.save(transaction);
 
         // Send coupon email to student
         String studentEmailSubject = "Resgate de Vantagem Confirmado: " + advantage.getName();
@@ -118,7 +117,7 @@ public class CoinService {
                 cost,
                 student.getCoinBalance(),
                 advantage.getCompany().getName(),
-                redemptionCode,
+                savedTransaction.getRedemptionCode(), // Use the saved code
                 advantage.getDescription()
         );
         emailService.sendSimpleEmail(student.getEmail(), studentEmailSubject, studentEmailBody);
@@ -131,9 +130,33 @@ public class CoinService {
                 advantage.getName(),
                 student.getName(),
                 student.getCpf(), // Assuming CPF is needed for verification
-                redemptionCode,
+                savedTransaction.getRedemptionCode(), // Use the saved code
                 advantage.getDescription()
         );
         emailService.sendSimpleEmail(advantage.getCompany().getEmail(), companyEmailSubject, companyEmailBody);
+
+        return savedTransaction;
+    }
+
+    @Transactional
+    public Transaction verifyRedemptionCode(String redemptionCode) {
+        Optional<Transaction> transactionOptional = transactionRepository.findByRedemptionCode(redemptionCode);
+
+        if (transactionOptional.isEmpty()) {
+            throw new RuntimeException("Invalid redemption code"); // TODO: Custom exception
+        }
+
+        Transaction transaction = transactionOptional.get();
+
+        if (transaction.isUsed()) {
+            throw new RuntimeException("Redemption code already used"); // TODO: Custom exception
+        }
+
+        // TODO: Add check for redemption code expiration if needed (e.g., add expiry date to Transaction)
+
+        // Mark the transaction as used
+        transaction.setUsed(true);
+        transaction.setUsedAt(LocalDateTime.now());
+        return transactionRepository.save(transaction);
     }
 }

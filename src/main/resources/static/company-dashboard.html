@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Empresa - Sistema Moeda de Mérito</title>
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px; /* Wider container */
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 { color: #5a67d8; margin-bottom: 15px; }
+        .section { margin-bottom: 30px; padding: 15px; border: 1px solid #ccc; border-radius: 4px; }
+        .company-info p { margin-bottom: 5px; }
+        .advantages-list ul { list-style: none; padding: 0; }
+        .advantages-list li { background-color: #f8f9fa; padding: 10px; border-bottom: 1px solid #eee; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;}
+         .advantages-list li strong { color: #5a67d8; }
+         .advantages-list .advantage-details { flex-grow: 1; margin-right: 10px; text-align: left;}
+         .advantages-list .advantage-cost { font-weight: bold; color: #333; }
+
+        .history ul { list-style: none; padding: 0; }
+        .history li { background-color: #f8f9fa; padding: 10px; border-bottom: 1px solid #eee; margin-bottom: 5px; border-radius: 4px; text-align: left;}
+         .history li strong { color: #5a67d8; }
+
+         .create-advantage-link { display: inline-block; margin-top: 10px; padding: 8px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px; }
+         .create-advantage-link:hover { background-color: #218838; }
+
+         #logoutButton { background-color: #dc3545; margin-top: 20px; float: right;}
+         #logoutButton:hover { background-color: #c82333; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard da Empresa</h1>
+
+        <button id="logoutButton">Sair</button>
+
+        <div class="section company-info">
+            <h2>Informações da Empresa</h2>
+            <p><strong>Nome:</strong> <span id="companyName">Carregando...</span></p>
+            <p><strong>Email:</strong> <span id="companyEmail">Carregando...</span></p>
+            <!-- Adicionar outras informações da empresa se disponíveis na entidade -->
+        </div>
+
+        <div class="section advantages-list">
+            <h2>Vantagens Oferecidas</h2>
+            <a href="cadastrar-vantagem.html" class="create-advantage-link">+ Cadastrar Nova Vantagem</a>
+            <ul id="companyAdvantages">
+                <li>Carregando vantagens...</li>
+            </ul>
+        </div>
+
+        <div class="section history">
+            <h2>Histórico de Resgates (Transações)</h2>
+            <ul id="transactionHistory">
+                <li>Carregando histórico...</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script src="company-dashboard.js"></script>
+</body>
+</html>

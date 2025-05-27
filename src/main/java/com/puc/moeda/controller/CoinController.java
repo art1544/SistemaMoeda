@@ -2,6 +2,7 @@ package com.puc.moeda.controller;
 
 import com.puc.moeda.dto.RedeemAdvantageDTO;
 import com.puc.moeda.dto.TransferRequestDTO;
+import com.puc.moeda.model.Transaction;
 import com.puc.moeda.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,10 +53,28 @@ public class CoinController {
         }
 
         try {
-            coinService.redeemAdvantage(studentId, redeemRequest);
-            return ResponseEntity.ok("Advantage redeemed successfully");
+            Transaction redeemedTransaction = coinService.redeemAdvantage(studentId, redeemRequest);
+             // Return details of the redeemed transaction, including the code
+            return ResponseEntity.ok(redeemedTransaction);
         } catch (RuntimeException e) {
             // TODO: More specific exception handling (e.g., InsufficientBalanceException, NotFoundException)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/verify-redemption")
+    public ResponseEntity<?> verifyRedemptionCode(@RequestBody Map<String, String> requestBody) {
+        String redemptionCode = requestBody.get("code");
+        if (redemptionCode == null || redemptionCode.trim().isEmpty()) {
+            return new ResponseEntity<>("Redemption code is required", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            Transaction verifiedTransaction = coinService.verifyRedemptionCode(redemptionCode);
+            // Return details of the verified transaction
+            return ResponseEntity.ok(verifiedTransaction);
+        } catch (RuntimeException e) {
+            // TODO: More specific exception handling (e.g., InvalidRedemptionCodeException, RedemptionCodeAlreadyUsedException)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
