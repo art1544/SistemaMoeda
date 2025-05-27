@@ -1,16 +1,29 @@
 package com.puc.moeda.validator;
 
-import org.hibernate.validator.constraints.br.CPF;
+import com.puc.moeda.interfaces.CPF; // Corrected import to your custom annotation
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class ValidarCPF implements ConstraintValidator<CPF, String> {
     @Override
+    public void initialize(CPF constraintAnnotation) {
+        // Initialization logic if needed
+    }
+
+    @Override
     public boolean isValid(String cpf, ConstraintValidatorContext context) {
-        if (cpf == null || cpf.length() != 11 || !cpf.matches("d+")) 
+        if (cpf == null || cpf.trim().isEmpty()) {
+            return true; // @NotBlank should handle empty/null
+        }
+
+        // Remove non-digit characters for validation
+        cpf = cpf.replace(".", "").replace("-", "");
+
+        if (cpf.length() != 11 || !cpf.matches("d+")) 
             return false;
-        
+
+       // Check for sequencial digits (e.g., 111.111.111-11)
        if (cpf.chars().distinct().count() == 1) 
            return false;
 
