@@ -2,14 +2,13 @@ package com.puc.moeda.interfaces;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import com.puc.moeda.validator.ValidPasswordValidator;
-
+import com.puc.moeda.validator.ValidarSenha;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = ValidPasswordValidator.class)
+@Constraint(validatedBy = ValidarSenha.class)
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidPassword {
