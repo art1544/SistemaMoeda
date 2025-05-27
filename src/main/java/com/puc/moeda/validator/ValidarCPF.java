@@ -21,7 +21,7 @@ public class ValidarCPF implements ConstraintValidator<CPF, String> {
         cpf = cpf.replace(".", "").replace("-", "");
 
         // Simplified validation: check for exactly 11 digits and numeric characters
-        if (cpf.length() == 11 && cpf.matches("d+")) {
+        if (cpf.length() == 11) {
             return true;
         } else {
             return false;
