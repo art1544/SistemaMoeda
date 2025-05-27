@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Backend Functionality Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        div { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; }
+        form div { margin-bottom: 10px; }
+        label { display: inline-block; width: 150px; }
+        input[type="text"], input[type="password"], input[type="email"], input[type="number"] { width: 200px; padding: 5px; }
+        button { padding: 8px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        pre { background-color: #f8f9fa; padding: 10px; border: 1px solid #e9ecef; overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+    <h1>Backend Functionality Test Page</h1>
+
+    <p>This page provides forms to test the different backend API endpoints. You will need to add JavaScript to handle the form submissions asynchronously and display the results below each section.</p>
+
+    <!-- Login -->
+    <div>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div>
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" name="usernameOrEmail" required>
+            </div>
+            <div>
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <h3>Login Response:</h3>
+        <pre id="loginResponse"></pre>
+    </div>
+
+    <!-- Student Registration -->
+    <div>
+        <h2>Student Registration</h2>
+        <form id="studentRegistrationForm">
+            <div>
+                <label for="studentName">Name:</label>
+                <input type="text" id="studentName" name="name" required>
+            </div>
+             <div>
+                <label for="studentEmail">Email:</label>
+                <input type="email" id="studentEmail" name="email" required>
+            </div>
+             <div>
+                <label for="studentCPF">CPF:</label>
+                <input type="text" id="studentCPF" name="cpf" required>
+            </div>
+             <div>
+                <label for="studentRG">RG:</label>
+                <input type="text" id="studentRG" name="rg" required>
+            </div>
+             <div>
+                <label for="studentAddress">Address:</label>
+                <input type="text" id="studentAddress" name="address" required>
+            </div>
+             <div>
+                <label for="studentInstitutionId">Institution ID:</label>
+                <input type="number" id="studentInstitutionId" name="institutionId" required>
+                 (See 'Get All Institutions' below for IDs)
+            </div>
+             <div>
+                <label for="studentCourse">Course:</label>
+                <input type="text" id="studentCourse" name="course" required>
+            </div>
+            <div>
+                <label for="studentPassword">Password:</label>
+                <input type="password" id="studentPassword" name="password" required>
+            </div>
+            <div>
+                <label for="studentConfirmPassword">Confirm Password:</label>
+                <input type="password" id="studentConfirmPassword" name="confirmPassword" required>
+            </div>
+            <button type="submit">Register Student</button>
+        </form>
+         <h3>Student Registration Response:</h3>
+        <pre id="studentRegistrationResponse"></pre>
+    </div>
+
+    <!-- Professor Registration -->
+     <div>
+        <h2>Professor Registration</h2>
+        <form id="professorRegistrationForm">
+            <div>
+                <label for="professorName">Name:</label>
+                <input type="text" id="professorName" name="name" required>
+            </div>
+             <div>
+                <label for="professorEmail">Email:</label>
+                <input type="email" id="professorEmail" name="email" required>
+            </div>
+             <div>
+                <label for="professorCPF">CPF:</label>
+                <input type="text" id="professorCPF" name="cpf" required>
+            </div>
+             <div>
+                <label for="professorDepartment">Department:</label>
+                <input type="text" id="professorDepartment" name="department" required>
+            </div>
+             <div>
+                <label for="professorInstitutionId">Institution ID:</label>
+                <input type="number" id="professorInstitutionId" name="institutionId" required>
+                 (See 'Get All Institutions' below for IDs)
+            </div>
+            <div>
+                <label for="professorPassword">Password:</label>
+                <input type="password" id="professorPassword" name="password" required>
+            </div>
+            <button type="submit">Register Professor</button>
+        </form>
+         <h3>Professor Registration Response:</h3>
+        <pre id="professorRegistrationResponse"></pre>
+    </div>
+
+    <!-- Company Registration -->
+     <div>
+        <h2>Company Registration</h2>
+        <form id="companyRegistrationForm">
+            <div>
+                <label for="companyName">Company Name:</label>
+                <input type="text" id="companyName" name="name" required>
+            </div>
+             <div>
+                <label for="companyEmail">Email:</label>
+                <input type="email" id="companyEmail" name="email" required>
+            </div>
+            <div>
+                <label for="companyPassword">Password:</label>
+                <input type="password" id="companyPassword" name="password" required>
+            </div>
+            <button type="submit">Register Company</button>
+        </form>
+         <h3>Company Registration Response:</h3>
+        <pre id="companyRegistrationResponse"></pre>
+    </div>
+
+    <!-- Transfer Coins (Professor to Student) -->
+     <div>
+        <h2>Transfer Coins (Professor to Student)</h2>
+        <p>Requires a valid JWT in the Authorization header.</p>
+        <form id="transferCoinsForm">
+             <div>
+                <label for="transferProfessorId">Professor ID:</label>
+                <input type="number" id="transferProfessorId" name="professorId" required>
+            </div>
+            <div>
+                <label for="transferStudentId">Student ID:</label>
+                <input type="number" id="transferStudentId" name="studentId" required>
+            </div>
+            <div>
+                <label for="transferAmount">Amount:</label>
+                <input type="number" id="transferAmount" name="amount" step="0.01" required>
+            </div>
+            <div>
+                <label for="transferReason">Reason:</label>
+                <input type="text" id="transferReason" name="reason" required>
+            </div>
+            <button type="submit">Transfer Coins</button>
+        </form>
+         <h3>Transfer Coins Response:</h3>
+        <pre id="transferCoinsResponse"></pre>
+    </div>
+
+    <!-- Redeem Advantage (Student) -->
+     <div>
+        <h2>Redeem Advantage (Student)</h2>
+         <p>Requires a valid JWT in the Authorization header.</p>
+        <form id="redeemAdvantageForm">
+             <div>
+                <label for="redeemStudentId">Student ID:</label>
+                <input type="number" id="redeemStudentId" name="studentId" required>
+            </div>
+            <div>
+                <label for="redeemAdvantageId">Advantage ID:</label>
+                <input type="number" id="redeemAdvantageId" name="advantageId" required>
+                 (See 'Get All Advantages' below for IDs)
+            </div>
+            <button type="submit">Redeem Advantage</button>
+        </form>
+         <h3>Redeem Advantage Response:</h3>
+        <pre id="redeemAdvantageResponse"></pre>
+    </div>
+
+    <!-- Get User Profile -->
+     <div>
+        <h2>Get User Profile</h2>
+         <p>Requires a valid JWT in the Authorization header.</p>
+        <form id="getUserProfileForm">
+             <div>
+                <label for="userProfileType">User Type:</label>
+                <select id="userProfileType" name="userType">
+                    <option value="student">Student</option>
+                    <option value="professor">Professor</option>
+                    <option value="company">Company</option>
+                </select>
+            </div>
+             <div>
+                <label for="userProfileId">User ID:</label>
+                <input type="number" id="userProfileId" name="userId" required>
+            </div>
+            <button type="submit">Get Profile</button>
+        </form>
+         <h3>User Profile Response:</h3>
+        <pre id="userProfileResponse"></pre>
+    </div>
+
+    <!-- Get Transaction History -->
+     <div>
+        <h2>Get Transaction History</h2>
+         <p>Requires a valid JWT in the Authorization header.</p>
+        <form id="getTransactionHistoryForm">
+              <div>
+                <label for="transactionHistoryUserType">User Type:</label>
+                <select id="transactionHistoryUserType" name="userType">
+                    <option value="student">Student</option>
+                    <option value="professor">Professor</option>
+                    <option value="company">Company</option>
+                </select>
+            </div>
+             <div>
+                <label for="transactionHistoryUserId">User ID:</label>
+                <input type="number" id="transactionHistoryUserId" name="userId" required>
+            </div>
+            <button type="submit">Get History</button>
+        </form>
+         <h3>Transaction History Response:</h3>
+        <pre id="transactionHistoryResponse"></pre>
+    </div>
+
+     <!-- Get All Institutions -->
+    <div>
+        <h2>Get All Institutions</h2>
+        <button id="getAllInstitutionsBtn">Get Institutions</button>
+         <h3>Institutions Response:</h3>
+        <pre id="allInstitutionsResponse"></pre>
+    </div>
+
+     <!-- Get All Advantages -->
+    <div>
+        <h2>Get All Advantages</h2>
+         <p>Requires a valid JWT in the Authorization header.</p>
+        <button id="getAllAdvantagesBtn">Get Advantages</button>
+         <h3>Advantages Response:</h3>
+        <pre id="allAdvantagesResponse"></pre>
+    </div>
+
+     <!-- Create Advantage (Company) -->
+     <div>
+        <h2>Create Advantage (Company)</h2>
+         <p>Requires a valid JWT in the Authorization header.</p>
+        <form id="createAdvantageForm">
+            <div>
+                <label for="advantageName">Name:</label>
+                <input type="text" id="advantageName" name="name" required>
+            </div>
+             <div>
+                <label for="advantageDescription">Description:</label>
+                <input type="text" id="advantageDescription" name="description" required>
+            </div>
+             <div>
+                <label for="advantageImageUrl">Image URL:</label>
+                <input type="text" id="advantageImageUrl" name="imageUrl" required>
+            </div>
+             <div>
+                <label for="advantageCost">Cost in Coins:</label>
+                <input type="number" id="advantageCost" name="costInCoins" step="0.01" required>
+            </div>
+             <div>
+                <label for="advantageCompanyId">Company ID:</label>
+                <input type="number" id="advantageCompanyId" name="companyId" required>
+            </div>
+            <button type="submit">Create Advantage</button>
+        </form>
+         <h3>Create Advantage Response:</h3>
+        <pre id="createAdvantageResponse"></pre>
+    </div>
+
+     <!-- Forgot Password -->
+     <div>
+        <h2>Forgot Password</h2>
+        <form id="forgotPasswordForm">
+             <div>
+                <label for="forgotPasswordEmail">Email:</label>
+                <input type="email" id="forgotPasswordEmail" name="email" required>
+            </div>
+            <button type="submit">Send Recovery Email</button>
+        </form>
+         <h3>Forgot Password Response:</h3>
+        <pre id="forgotPasswordResponse"></pre>
+    </div>
+
+     <!-- Reset Password -->
+     <div>
+        <h2>Reset Password</h2>
+        <p>Requires a valid token from the recovery email.</p>
+        <form id="resetPasswordForm">
+             <div>
+                <label for="resetPasswordToken">Token:</label>
+                <input type="text" id="resetPasswordToken" name="token" required>
+            </div>
+             <div>
+                <label for="resetPasswordNewPassword">New Password:</label>
+                <input type="password" id="resetPasswordNewPassword" name="newPassword" required>
+            </div>
+             <div>
+                <label for="resetPasswordConfirmNewPassword">Confirm New Password:</label>
+                <input type="password" id="resetPasswordConfirmNewPassword" name="confirmNewPassword" required>
+            </div>
+            <button type="submit">Reset Password</button>
+        </form>
+         <h3>Reset Password Response:</h3>
+        <pre id="resetPasswordResponse"></pre>
+    </div>
+
+    <script>
+        // TODO: Add JavaScript here to handle form submissions using fetch or XMLHttpRequest
+        // For each form:
+        // 1. Prevent the default form submission.
+        // 2. Get the form data.
+        // 3. Make an asynchronous HTTP request (POST, GET, etc.) to the appropriate backend endpoint.
+        // 4. Include the JWT in the Authorization header for protected endpoints.
+        // 5. Handle the response: parse JSON, check for errors, and display the result in the corresponding <pre> tag.
+
+        // Example of how to get form data:
+        // const formData = new FormData(event.target);
+        // const data = Object.fromEntries(formData.entries());
+        // const jsonData = JSON.stringify(data);
+
+        // Example of a POST request:
+        // fetch('/api/auth/login', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: jsonData
+        // })
+        // .then(response => response.json())
+        // .then(data => { /* display data */ })
+        // .catch(error => { /* display error */ });
+
+        // Example of a GET request with Authorization header:
+        // fetch('/api/profile/student/1', {
+        //     method: 'GET',
+        //     headers: { 'Authorization': 'Bearer YOUR_JWT_TOKEN' }
+        // })
+        // .then(response => response.json())
+        // .then(data => { /* display data */ })
+        // .catch(error => { /* display error */ });
+
+    </script>
+
+</body>
+</html>
