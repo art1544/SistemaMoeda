@@ -40,6 +40,10 @@ public class Transaction {
     @JoinColumn(name = "advantage_id")
     private Advantage advantage; // For redemption transactions
 
+    private String redemptionCode; // New field for redemption code
+    private boolean isUsed = false; // New field to track if the code has been used
+    private LocalDateTime usedAt; // New field to record when the code was used
+
     // Getters and setters
     public Long getId() {
         return id;
@@ -111,5 +115,29 @@ public class Transaction {
 
     public void setAdvantage(Advantage advantage) {
         this.advantage = advantage;
+    }
+
+    public String getRedemptionCode() {
+        return redemptionCode;
+    }
+
+    public void setRedemptionCode(String redemptionCode) {
+        this.redemptionCode = redemptionCode;
+    }
+
+    public boolean isUsed() {
+        return isUsed;
+    }
+
+    public void setUsed(boolean used) {
+        isUsed = used;
+    }
+
+    public LocalDateTime getUsedAt() {
+        return usedAt;
+    }
+
+    public void setUsedAt(LocalDateTime usedAt) {
+        this.usedAt = usedAt;
     }
 }
