@@ -9,7 +9,8 @@ import java.util.regex.Pattern;
 
 public class ValidPasswordValidator implements ConstraintValidator<ValidPassword, String> {
 
-    private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,}$;";
+    // Simplified regex: Requires at least 8 characters
+    private static final String PASSWORD_PATTERN = ".{8,}"; // Simplified regex
 
     @Override
     public void initialize(ValidPassword constraintAnnotation) {
@@ -17,12 +18,13 @@ public class ValidPasswordValidator implements ConstraintValidator<ValidPassword
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
-        return (validatePassword(password));
-    }
-
-    private boolean validatePassword(String password) {
+        if (password == null) { // Handle null case, @NotBlank handles empty
+            return false;
+        }
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
+
+    // Removed the private validatePassword method as logic is now directly in isValid
 }
