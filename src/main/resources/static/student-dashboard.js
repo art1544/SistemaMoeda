@@ -7,20 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutButton = document.getElementById('logoutButton');
 
     // Função para obter o JWT armazenado
-    function getJwtToken() {
-        return localStorage.getItem('jwtToken'); // Ou de cookies, etc.
-    }
-
+    
     // Função para carregar o perfil do aluno (saldo)
     async function loadStudentProfile() {
-        const token = getJwtToken();
-        if (!token) {
-            // TODO: Redirecionar para a página de login se não houver token
-            console.error('JWT não encontrado. Redirecionando para login.');
-            // window.location.href = '/login.html';
-            studentBalanceElement.textContent = 'Erro: Não autenticado.';
-            return;
-        }
 
         // TODO: Em uma aplicação real, o ID do aluno logado seria obtido do token JWT ou da sessão
         // Por enquanto, usaremos um ID fixo ou pediremos para o usuário inserir (não seguro)
@@ -29,10 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             const response = await fetch(`/api/profile/student/${studentId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                method: 'GET'
+                
             });
 
             if (response.ok) {
@@ -55,19 +42,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para carregar o histórico de transações do aluno
      async function loadStudentTransactionHistory() {
-         const token = getJwtToken();
-         if (!token) {
-            // Já tratado em loadStudentProfile, mas bom ter aqui também
-            return;
-         }
+         
           const studentId = 2; // SUBSTITUA PELO ID REAL DO ALUNO LOGADO
 
          try {
              const response = await fetch(`/api/profile/student/${studentId}/transactions`, {
-                 method: 'GET',
-                 headers: {
-                     'Authorization': `Bearer ${token}`
-                 }
+                 method: 'GET'
+                 
              });
 
              if (response.ok) {
@@ -113,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Listener para o botão de logout
     logoutButton.addEventListener('click', function() {
-        localStorage.removeItem('jwtToken'); // Remover o token
         // TODO: Opcional: Invalidar o token no backend se houver suporte a isso
         window.location.href = '/login.html'; // Redirecionar para a página de login
     });

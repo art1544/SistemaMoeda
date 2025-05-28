@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const companyIdInput = document.getElementById('companyId');
 
     // Função para obter o JWT armazenado
-    function getJwtToken() {
-        return localStorage.getItem('jwtToken'); // Ou de cookies, etc.
-    }
+    
 
     // Função para exibir mensagens
     function showMessage(element, message, isError = false) {
@@ -45,13 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         clearMessages(); // Limpar mensagens anteriores
 
-        const token = getJwtToken();
-        if (!token) {
-            // TODO: Redirecionar para a página de login se não houver token
-            console.error('JWT não encontrado. Redirecionando para login.');
-             showMessage(createAdvantageErrorElement, 'Erro: Não autenticado para cadastrar vantagem.', true);
-            return;
-        }
 
         const formData = new FormData(createAdvantageForm);
          // Garantir que costInCoins seja um número
@@ -75,8 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch('/api/advantages', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
                 body: jsonData
             });

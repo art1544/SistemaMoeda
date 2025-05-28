@@ -9,10 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const transactionHistoryElement = document.getElementById('transactionHistory');
     const logoutButton = document.getElementById('logoutButton');
 
-    // Função para obter o JWT armazenado
-    function getJwtToken() {
-        return localStorage.getItem('jwtToken'); // Ou de cookies, etc.
-    }
+   
 
     // Função para limpar mensagens de transferência
     function clearTransferMessages() {
@@ -22,14 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para carregar o perfil do professor (saldo)
     async function loadProfessorProfile() {
-        const token = getJwtToken();
-        if (!token) {
-            // TODO: Redirecionar para a página de login se não houver token
-            console.error('JWT não encontrado. Redirecionando para login.');
-            // window.location.href = '/login.html';
-            professorBalanceElement.textContent = 'Erro: Não autenticado.';
-            return;
-        }
 
         // TODO: Em uma aplicação real, o ID do professor logado seria obtido do token JWT ou da sessão
         // Por enquanto, usaremos um ID fixo ou pediremos para o usuário inserir (não seguro)
@@ -38,10 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             const response = await fetch(`/api/profile/professor/${professorId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                method: 'GET'
+                
             });
 
             if (response.ok) {
@@ -64,19 +51,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para carregar o histórico de transações do professor
      async function loadTransactionHistory() {
-         const token = getJwtToken();
-         if (!token) {
-            // Já tratado em loadProfessorProfile, mas bom ter aqui também
-            return;
-         }
           const professorId = 1; // SUBSTITUA PELO ID REAL DO PROFESSOR LOGADO
 
          try {
              const response = await fetch(`/api/profile/professor/${professorId}/transactions`, {
-                 method: 'GET',
-                 headers: {
-                     'Authorization': `Bearer ${token}`
-                 }
+                 method: 'GET'
+                
              });
 
              if (response.ok) {
@@ -125,13 +105,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         clearTransferMessages(); // Limpar mensagens anteriores
 
-        const token = getJwtToken();
-        if (!token) {
-            // TODO: Redirecionar para a página de login se não houver token
-            console.error('JWT não encontrado. Redirecionando para login.');
-            transferErrorElement.textContent = 'Erro: Não autenticado.';
-            return;
-        }
          const professorId = 1; // SUBSTITUA PELO ID REAL DO PROFESSOR LOGADO
 
         const formData = new FormData(transferForm);
@@ -154,8 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch(`/api/coins/transfer/professor/${professorId}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
                 body: jsonData
             });
@@ -192,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Listener para o botão de logout
     logoutButton.addEventListener('click', function() {
-        localStorage.removeItem('jwtToken'); // Remover o token
         // TODO: Opcional: Invalidar o token no backend se houver suporte a isso
         window.location.href = '/login.html'; // Redirecionar para a página de login
     });

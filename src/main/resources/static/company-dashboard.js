@@ -9,21 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutButton = document.getElementById('logoutButton');
 
     // Função para obter o JWT armazenado
-    function getJwtToken() {
-        return localStorage.getItem('jwtToken'); // Ou de cookies, etc.
-    }
+   
 
     // Função para carregar o perfil da empresa
     async function loadCompanyProfile() {
-        const token = getJwtToken();
-        if (!token) {
-            // TODO: Redirecionar para a página de login se não houver token
-            console.error('JWT não encontrado. Redirecionando para login.');
-            // window.location.href = '/login.html';
-             companyNameElement.textContent = 'Erro: Não autenticado.';
-             companyEmailElement.textContent = 'Erro: Não autenticado.';
-            return;
-        }
 
         // TODO: Em uma aplicação real, o ID da empresa logada seria obtido do token JWT ou da sessão
         // Por enquanto, usaremos um ID fixo (não seguro)
@@ -65,21 +54,12 @@ document.addEventListener('DOMContentLoaded', function() {
      // Este frontend assume que tal endpoint (/api/advantages/company/{companyId}) existirá.
      // Se o backend não tiver esse endpoint, você precisará adaptá-lo ou carregar todas as vantagens e filtrar no frontend (menos eficiente).
      async function loadCompanyAdvantages() {
-         const token = getJwtToken();
-         if (!token) {
-             companyAdvantagesListElement.innerHTML = '<li>Erro: Não autenticado.</li>';
-             return;
-         }
          const companyId = 3; // SUBSTITUA PELO ID REAL DA EMPRESA LOGADA
 
          try {
              // TODO: Atualizar URL quando o endpoint existir no backend
              const response = await fetch(`/api/advantages`, { // Assuming /api/advantages lists all and we might filter or backend needs adjustment
-                 method: 'GET',
-                 headers: {
-                     'Authorization': `Bearer ${token}`
-                 }
-             });
+                 method: 'GET'             });
 
              if (response.ok) {
                  let advantages = await response.json();
@@ -123,19 +103,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para carregar o histórico de transações da empresa (resgates)
       async function loadCompanyTransactionHistory() {
-          const token = getJwtToken();
-          if (!token) {
-             transactionHistoryElement.innerHTML = '<li>Erro: Não autenticado.</li>';
-             return;
-          }
+        
            const companyId = 3; // SUBSTITUA PELO ID REAL DA EMPRESA LOGADA
 
           try {
               const response = await fetch(`/api/profile/company/${companyId}/transactions`, {
-                  method: 'GET',
-                  headers: {
-                      'Authorization': `Bearer ${token}`
-                  }
+                  method: 'GET'
               });
 
               if (response.ok) {
@@ -181,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Listener para o botão de logout
     logoutButton.addEventListener('click', function() {
-        localStorage.removeItem('jwtToken'); // Remover o token
         // TODO: Opcional: Invalidar o token no backend se houver suporte a isso
         window.location.href = '/login.html'; // Redirecionar para a página de login
     });

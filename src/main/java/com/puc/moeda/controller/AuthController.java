@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/auth") // Example base path
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
@@ -34,20 +35,27 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDTO, BindingResult bindingResult) {
 
-        // Check for validation errors
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(getValidationErrors(bindingResult), HttpStatus.BAD_REQUEST);
         }
 
         try {
-            String jwt = authService.authenticateUser(loginDTO);
-            // Return the generated JWT
-            return ResponseEntity.ok(jwt);
+            // Call AuthService to authenticate and get UserDetails
+            UserDetails userDetails = authService.authenticateUser(loginDTO);
+
+            // Authentication successful, return basic user info or success message
+            // We are no longer returning a JWT
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Authentication successful");
+            response.put("username", userDetails.getUsername());
+            response.put("roles", userDetails.getAuthorities()); // Return roles if needed on frontend
+            // TODO: Include more user-specific info like ID, type (student, professor, company) if needed on frontend
+
+            return ResponseEntity.ok(response);
+
         } catch (AuthenticationException e) {
-            // Handle authentication failures (e.g., bad credentials)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         } catch (RuntimeException e) {
-             // Handle other potential runtime exceptions from the service
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during authentication");
         }
     }

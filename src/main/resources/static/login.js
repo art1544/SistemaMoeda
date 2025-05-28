@@ -25,15 +25,29 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         });
 
         if (response.ok) { // Status 200-299
-            const jwt = await response.text(); // Ou response.json() se o backend retornar um JSON com o token
-            console.log('Login bem-sucedido. JWT:', jwt);
+            // O backend agora retorna um JSON com info do usuário, não um JWT
+            const userInfo = await response.json(); 
+            console.log('Login bem-sucedido. Informações do usuário:', userInfo);
 
-            // Armazenar o JWT (exemplo usando localStorage)
-            localStorage.setItem('jwtToken', jwt);
+            // TODO: Armazenar informações do usuário (não JWT) no localStorage ou session storage se necessário para navegação
+            // Exemplo: localStorage.setItem('loggedInUser', JSON.stringify(userInfo));
+            // NOTA: Sem JWT, a autenticação em requisições subsequentes não está sendo feita automaticamente.
+            // Você precisará gerenciar o estado de login no frontend ou adicionar outra forma de autenticação.
 
-            // TODO: Redirecionar para a página inicial do usuário (dashboard, perfil, etc.)
-            // window.location.href = '/dashboard.html'; // Exemplo de redirecionamento
-             loginError.textContent = 'Login bem-sucedido! JWT recebido. (Redirecionamento a ser implementado)';
+            // Redirecionar para a página apropriada com base no papel (role) do usuário
+            // Assumindo que a resposta do backend inclui o papel do usuário, por exemplo, userInfo.roles
+            if (userInfo.roles && userInfo.roles.includes('ROLE_PROFESSOR')) {
+                window.location.href = '/professor-dashboard.html';
+            } else if (userInfo.roles && userInfo.roles.includes('ROLE_STUDENT')) {
+                 window.location.href = '/student-dashboard.html';
+            } else if (userInfo.roles && userInfo.roles.includes('ROLE_COMPANY')) {
+                 window.location.href = '/company-dashboard.html';
+            } else {
+                 // Papel desconhecido ou não incluído na resposta
+                 console.warn('Papel do usuário desconhecido. Redirecionando para página padrão.');
+                 loginError.textContent = 'Login bem-sucedido, mas papel do usuário desconhecido.';
+                 // Opcional: Redirecionar para uma página padrão ou exibir um erro
+            }
 
         } else if (response.status === 400) { // Erros de validação
             const errors = await response.json();

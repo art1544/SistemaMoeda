@@ -1,7 +1,6 @@
 package com.puc.moeda.service;
 
 import com.puc.moeda.dto.LoginDTO;
-import com.puc.moeda.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,10 +17,9 @@ public class AuthService {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    // Removido: @Autowired private JwtUtil jwtUtil;
 
-    public String authenticateUser(LoginDTO loginDTO) {
+    public UserDetails authenticateUser(LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDTO.getUsernameOrEmail(),
@@ -29,8 +27,8 @@ public class AuthService {
                 )
         );
 
-        // Authentication successful, now generate JWT
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getUsernameOrEmail());
-        return jwtUtil.generateToken(userDetails);
+        // Authentication successful, return UserDetails
+        // We no longer generate JWT
+        return userDetailsService.loadUserByUsername(loginDTO.getUsernameOrEmail());
     }
 }

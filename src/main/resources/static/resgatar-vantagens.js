@@ -32,20 +32,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para carregar a lista de vantagens
     async function loadAdvantages() {
-        const token = getJwtToken();
-        if (!token) {
-            // TODO: Redirecionar para a página de login se não houver token
-            console.error('JWT não encontrado. Redirecionando para login.');
-            advantagesListElement.innerHTML = '<p>Erro: Não autenticado. Faça login para ver as vantagens.</p>';
-            return;
-        }
 
         try {
             const response = await fetch('/api/advantages', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                method: 'GET'
+                
             });
 
             if (response.ok) {
@@ -97,14 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
          // TODO: Em uma aplicação real, o ID do aluno logado seria obtido do token JWT ou da sessão
         const studentId = 2; // SUBSTITUA PELO ID REAL DO ALUNO LOGADO
 
-        const token = getJwtToken();
-         if (!token) {
-            console.error('JWT não encontrado. Redirecionando para login.');
-             showMessage(advantagesErrorElement, 'Erro: Não autenticado para resgatar vantagem.', true);
-            // TODO: Redirecionar para a página de login
-            return;
-        }
-
+       
         const redeemData = {
             advantageId: parseInt(advantageId)
         };
@@ -113,8 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch(`/api/coins/redeem/student/${studentId}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(redeemData)
             });

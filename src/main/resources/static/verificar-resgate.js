@@ -7,9 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const verificationErrorElement = document.getElementById('verificationError');
 
     // Função para obter o JWT armazenado (assumindo que a empresa está logada)
-    function getJwtToken() {
-        return localStorage.getItem('jwtToken'); // Ou de cookies, etc.
-    }
+    
 
     // Função para exibir mensagens
     function showMessage(element, message, isError = false) {
@@ -43,13 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
              return;
          }
 
-        const token = getJwtToken();
-         if (!token) {
-            // TODO: Redirecionar para a página de login da empresa se não houver token
-            console.error('JWT não encontrado. Redirecionando para login.');
-             showMessage(verificationErrorElement, 'Erro: Não autenticado para verificar resgate.', true);
-            return;
-        }
 
         const verificationData = {
             code: redemptionCode
@@ -62,8 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch('/api/coins/verify-redemption', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                     'Authorization': `Bearer ${token}` // Empresas precisam estar autenticadas
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(verificationData)
             });

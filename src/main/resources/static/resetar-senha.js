@@ -3,7 +3,6 @@
 document.getElementById('resetPasswordForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevenir o envio padrão do formulário
 
-    const token = document.getElementById('token').value;
     const newPassword = document.getElementById('newPassword').value;
     const confirmNewPassword = document.getElementById('confirmNewPassword').value;
     const resetMessage = document.getElementById('resetMessage');
@@ -21,7 +20,6 @@ document.getElementById('resetPasswordForm').addEventListener('submit', async fu
     // A validação de complexidade de senha será feita no backend com @ValidPassword
 
     const resetData = {
-        token: token,
         newPassword: newPassword,
         confirmNewPassword: confirmNewPassword
          // Note: The backend DTO might not need confirmNewPassword if validation is done on the backend side
