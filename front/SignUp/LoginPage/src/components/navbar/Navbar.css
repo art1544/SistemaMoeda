@@ -1,0 +1,14 @@
+.Navbar {
+  background-color: white;
+  color: black;
+}
+
+/* Replace the body padding with a class */
+.with-navbar {
+  padding-top: 64px; /* Adjust this value based on your navbar height */
+}
+
+/* Remove the body padding */
+body {
+  margin: 0;
+}

@@ -1,0 +1,17 @@
+.user-balance-container {
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.balance-amount {
+  color: #3d454e;
+  font-weight: 500;
+  margin-bottom: 0.5rem !important;
+  font-size: 3rem !important;
+}
+
+.balance-label {
+  color: #6b7280;
+  font-weight: 400;
+  font-size: 0.875rem !important;
+}

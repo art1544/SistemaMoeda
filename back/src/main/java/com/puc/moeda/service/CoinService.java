@@ -71,16 +71,6 @@ public class CoinService {
         transaction.setTimestamp(LocalDateTime.now());
         transactionRepository.save(transaction);
 
-        // Send email notification to student
-        String studentEmailSubject = "Você recebeu " + amount + " moedas de mérito!";
-        String studentEmailBody = String.format(
-                "Olá %s, Você recebeu %s moedas de mérito do professor %s. Motivo: %s Seu novo saldo é de %s moedas.",
-                student.getName(),
-                amount,
-                professor.getName(),
-                transferRequest.getReason(),
-                student.getCoinBalance());
-        emailService.sendSimpleEmail(student.getEmail(), studentEmailSubject, studentEmailBody);
     }
 
     @Transactional
@@ -113,33 +103,6 @@ public class CoinService {
         transaction.setUsed(false); // Mark as not used initially
         // usedAt is null initially
         Transaction savedTransaction = transactionRepository.save(transaction);
-
-        // Send coupon email to student
-        String studentEmailSubject = "Resgate de Vantagem Confirmado: " + advantage.getName();
-        String studentEmailBody = String.format(
-                "Olá %s, Você resgatou a vantagem %s. Custo: %s moedas. Seu novo saldo é de %s moedas. Apresente o código abaixo na empresa parceira (%s) para utilizar sua vantagem: %s Detalhes da Vantagem: %s",
-                student.getName(),
-                advantage.getName(),
-                cost,
-                student.getCoinBalance(),
-                advantage.getCompany().getName(),
-                savedTransaction.getRedemptionCode(), // Use the saved code
-                advantage.getDescription()
-        );
-        emailService.sendSimpleEmail(student.getEmail(), studentEmailSubject, studentEmailBody);
-
-        // Send notification email to partner company
-        String companyEmailSubject = "Resgate de Vantagem: " + advantage.getName();
-        String companyEmailBody = String.format(
-                "Olá %s, Um aluno resgatou a vantagem %s. Aluno: %s (CPF: %s) Código de Resgate: %s Detalhes da Vantagem: %s",
-                advantage.getCompany().getName(),
-                advantage.getName(),
-                student.getName(),
-                student.getCpf(), // Assuming CPF is needed for verification
-                savedTransaction.getRedemptionCode(), // Use the saved code
-                advantage.getDescription()
-        );
-        emailService.sendSimpleEmail(advantage.getCompany().getEmail(), companyEmailSubject, companyEmailBody);
 
         return savedTransaction;
     }

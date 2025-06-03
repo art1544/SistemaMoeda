@@ -1,0 +1,46 @@
+.new-transfer-container {
+    padding: 20px;
+    max-width: 500px;
+}
+
+.transfer-heading {
+    color: #3d454e;
+    margin-bottom: 25px !important;
+    font-size: 1.8rem !important;
+}
+
+.transfer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.select-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.select-field {
+    flex: 1;
+    min-width: 120px;
+}
+
+.amount-field {
+    width: 100%;
+}
+
+.transfer-button {
+    background-color: #4a5568 !important;
+    color: white !important;
+    text-transform: none !important;
+    padding: 10px 20px !important;
+    width: fit-content;
+    margin-top: 10px !important;
+    border-radius: 4px !important;
+}
+
+/* Style overrides for Material UI components */
+.MuiOutlinedInput-root {
+    border-radius: 4px !important;
+}
