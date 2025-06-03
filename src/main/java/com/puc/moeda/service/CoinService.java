@@ -7,6 +7,12 @@ import com.puc.moeda.repository.AdvantageRepository;
 import com.puc.moeda.repository.ProfessorRepository;
 import com.puc.moeda.repository.StudentRepository;
 import com.puc.moeda.repository.TransactionRepository;
+import com.puc.moeda.exception.ProfessorNotFoundException;
+import com.puc.moeda.exception.StudentNotFoundException;
+import com.puc.moeda.exception.InsufficientBalanceException;
+import com.puc.moeda.exception.AdvantageNotFoundException;
+import com.puc.moeda.exception.InvalidRedemptionCodeException;
+import com.puc.moeda.exception.RedemptionCodeAlreadyUsedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,15 +43,15 @@ public class CoinService {
     @Transactional
     public void transferCoins(Long professorId, TransferRequestDTO transferRequest) {
         Professor professor = professorRepository.findById(professorId)
-                .orElseThrow(() -> new RuntimeException("Professor not found")); // TODO: Custom exception
+                .orElseThrow(() -> new ProfessorNotFoundException("Professor not found with id: " + professorId));
 
         Student student = studentRepository.findById(transferRequest.getStudentId())
-                .orElseThrow(() -> new RuntimeException("Student not found")); // TODO: Custom exception
+                .orElseThrow(() -> new StudentNotFoundException("Student not found with id: " + transferRequest.getStudentId()));
 
         BigDecimal amount = transferRequest.getAmount();
 
         if (professor.getCoinBalance().compareTo(amount) < 0) {
-            throw new RuntimeException("Insufficient balance"); // TODO: Custom exception
+            throw new InsufficientBalanceException("Professor has insufficient balance to transfer " + amount + " coins.");
         }
 
         // Deduct from professor
@@ -80,15 +86,15 @@ public class CoinService {
     @Transactional
     public Transaction redeemAdvantage(Long studentId, RedeemAdvantageDTO redeemRequest) {
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found")); // TODO: Custom exception
+                .orElseThrow(() -> new StudentNotFoundException("Student not found with id: " + studentId));
 
         Advantage advantage = advantageRepository.findById(redeemRequest.getAdvantageId())
-                .orElseThrow(() -> new RuntimeException("Advantage not found")); // TODO: Custom exception
+                .orElseThrow(() -> new AdvantageNotFoundException("Advantage not found with id: " + redeemRequest.getAdvantageId()));
 
         BigDecimal cost = advantage.getCostInCoins();
 
         if (student.getCoinBalance().compareTo(cost) < 0) {
-            throw new RuntimeException("Insufficient balance"); // TODO: Custom exception
+            throw new InsufficientBalanceException("Student has insufficient balance to redeem advantage: " + advantage.getName());
         }
 
         // Deduct from student
@@ -143,13 +149,13 @@ public class CoinService {
         Optional<Transaction> transactionOptional = transactionRepository.findByRedemptionCode(redemptionCode);
 
         if (transactionOptional.isEmpty()) {
-            throw new RuntimeException("Invalid redemption code"); // TODO: Custom exception
+            throw new InvalidRedemptionCodeException("Invalid redemption code: " + redemptionCode);
         }
 
         Transaction transaction = transactionOptional.get();
 
         if (transaction.isUsed()) {
-            throw new RuntimeException("Redemption code already used"); // TODO: Custom exception
+            throw new RedemptionCodeAlreadyUsedException("Redemption code already used: " + redemptionCode);
         }
 
         // TODO: Add check for redemption code expiration if needed (e.g., add expiry date to Transaction)
