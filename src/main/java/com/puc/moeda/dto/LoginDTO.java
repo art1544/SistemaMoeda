@@ -1,33 +1,38 @@
 package com.puc.moeda.dto;
 
-import com.puc.moeda.interfaces.ValidEmail;
-import com.puc.moeda.interfaces.ValidPassword;
 import jakarta.validation.constraints.NotBlank;
+import com.puc.moeda.validation.Email;
 
 public class LoginDTO {
-
-    @NotBlank(message = "O campo usuário/email não pode estar vazio")
-    @ValidEmail(message = "Formato de email inválido")
-    private String usernameOrEmail;
-
-    @NotBlank(message = "O campo senha não pode estar vazio")
-    @ValidPassword
-    private String password;
-
-    // Getters and setters
-    public String getUsernameOrEmail() {
-        return usernameOrEmail;
+    
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Email inválido")
+    private String email;
+    
+    @NotBlank(message = "A senha é obrigatória")
+    private String senha;
+    
+    public LoginDTO() {
     }
-
-    public void setUsernameOrEmail(String usernameOrEmail) {
-        this.usernameOrEmail = usernameOrEmail;
+    
+    public LoginDTO(String email, String senha) {
+        this.email = email;
+        this.senha = senha;
     }
-
-    public String getPassword() {
-        return password;
+    
+    public String getEmail() {
+        return email;
     }
-
-    public void setPassword(String password) {
-        this.password = password;
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public String getSenha() {
+        return senha;
+    }
+    
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }
