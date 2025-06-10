@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Professor - Sistema de Moeda</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Área do Professor</h2>
+        <div id="professor-info"></div>
+        <h3>Transferir Moedas para Estudante</h3>
+        <form id="transfer-form">
+            <select id="student-select" name="studentId" required></select><br>
+            <input type="number" name="amount" min="1" placeholder="Quantidade de moedas" required><br>
+            <input type="text" name="reason" placeholder="Motivo" required><br>
+            <button type="submit">Transferir</button>
+        </form>
+        <div id="transfer-message" class="form-message"></div>
+        <h3>Histórico de Transações</h3>
+        <ul id="transaction-list"></ul>
+        <div style="margin-top:16px;">
+            <button id="logout-btn">Sair</button>
+        </div>
+    </div>
+    <script src="assets/js/professor.js"></script>
+</body>
+</html>

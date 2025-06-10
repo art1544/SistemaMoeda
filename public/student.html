@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Estudante - Sistema de Moeda</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Área do Estudante</h2>
+        <div id="student-info"></div>
+        <h3>Histórico de Transações</h3>
+        <ul id="transaction-list"></ul>
+        <h3>Vantagens Disponíveis</h3>
+        <ul id="advantage-list"></ul>
+        <div id="redeem-message" class="form-message"></div>
+        <h4>Verificar Código de Resgate</h4>
+        <form id="verify-form">
+            <input type="text" name="code" placeholder="Código de resgate" required>
+            <button type="submit">Verificar</button>
+            <span id="verify-message"></span>
+        </form>
+        <div style="margin-top:16px;">
+            <button id="logout-btn">Sair</button>
+        </div>
+    </div>
+    <script src="assets/js/student.js"></script>
+</body>
+</html>
