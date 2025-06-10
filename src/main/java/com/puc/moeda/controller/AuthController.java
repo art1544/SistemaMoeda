@@ -5,6 +5,9 @@ import com.puc.moeda.dto.PasswordRecoveryRequestDTO;
 import com.puc.moeda.dto.PasswordResetDTO;
 import com.puc.moeda.service.AuthService;
 import com.puc.moeda.service.PasswordRecoveryService;
+import com.puc.moeda.repository.StudentRepository;
+import com.puc.moeda.repository.ProfessorRepository;
+import com.puc.moeda.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,15 @@ public class AuthController {
     @Autowired
     private PasswordRecoveryService passwordRecoveryService;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private ProfessorRepository professorRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDTO, BindingResult bindingResult) {
 
@@ -43,21 +55,56 @@ public class AuthController {
             // Call AuthService to authenticate and get UserDetails
             UserDetails userDetails = authService.authenticateUser(loginDTO);
 
-            // Authentication successful, return basic user info or success message
-            // We are no longer returning a JWT
+            // Get additional user information
+            Map<String, Object> userInfo = getUserInfo(userDetails.getUsername());
+
+            // Authentication successful, return user info
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Authentication successful");
             response.put("username", userDetails.getUsername());
-            response.put("roles", userDetails.getAuthorities()); // Return roles if needed on frontend
-            // TODO: Include more user-specific info like ID, type (student, professor, company) if needed on frontend
+            response.put("roles", userDetails.getAuthorities());
+            response.put("id", userInfo.get("id"));
+            response.put("userType", userInfo.get("userType"));
+            response.put("name", userInfo.get("name"));
 
             return ResponseEntity.ok(response);
 
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during authentication");
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "An error occurred during authentication");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
+    }
+
+    private Map<String, Object> getUserInfo(String email) {
+        Map<String, Object> userInfo = new HashMap<>();
+        
+        // Check if it's a student
+        studentRepository.findByEmail(email).ifPresent(student -> {
+            userInfo.put("id", student.getId());
+            userInfo.put("userType", "STUDENT");
+            userInfo.put("name", student.getName());
+        });
+        
+        // Check if it's a professor
+        professorRepository.findByEmail(email).ifPresent(professor -> {
+            userInfo.put("id", professor.getId());
+            userInfo.put("userType", "PROFESSOR");
+            userInfo.put("name", professor.getName());
+        });
+        
+        // Check if it's a company
+        companyRepository.findByEmail(email).ifPresent(company -> {
+            userInfo.put("id", company.getId());
+            userInfo.put("userType", "COMPANY");
+            userInfo.put("name", company.getName());
+        });
+        
+        return userInfo;
     }
 
     @PostMapping("/forgot-password")
@@ -68,10 +115,14 @@ public class AuthController {
 
         try {
             passwordRecoveryService.createPasswordResetToken(requestDTO.getEmail());
-            return ResponseEntity.ok("Password recovery email sent");
+            Map<String, String> successResponse = new HashMap<>();
+            successResponse.put("message", "Password recovery email sent");
+            return ResponseEntity.ok(successResponse);
         } catch (RuntimeException e) {
              // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 
@@ -83,15 +134,32 @@ public class AuthController {
 
         try {
             passwordRecoveryService.resetPassword(resetDTO);
-            return ResponseEntity.ok("Password has been reset successfully");
+            Map<String, String> successResponse = new HashMap<>();
+            successResponse.put("message", "Password has been reset successfully");
+            return ResponseEntity.ok(successResponse);
         } catch (RuntimeException e) {
              // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 
      private Map<String, String> getValidationErrors(BindingResult bindingResult) {
-        return bindingResult.getFieldErrors().stream()
-                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+        Map<String, String> errors = new HashMap<>();
+        
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            String field = fieldError.getField();
+            String message = fieldError.getDefaultMessage();
+            
+            if (errors.containsKey(field)) {
+                // Se já existe um erro para este campo, concatena as mensagens
+                errors.put(field, errors.get(field) + "; " + message);
+            } else {
+                errors.put(field, message);
+            }
+        }
+        
+        return errors;
     }
 }

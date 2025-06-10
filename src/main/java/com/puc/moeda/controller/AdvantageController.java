@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +35,18 @@ public class AdvantageController {
         return ResponseEntity.ok(advantages);
     }
 
+    @GetMapping("/company/{companyId}")
+    public ResponseEntity<?> getAdvantagesByCompany(@PathVariable Long companyId) {
+        try {
+            List<Advantage> advantages = advantageService.getAdvantagesByCompany(companyId);
+            return ResponseEntity.ok(advantages);
+        } catch (RuntimeException e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<?> createAdvantage(
             @Valid @RequestBody AdvantageCreationDTO creationDTO,
@@ -44,15 +58,46 @@ public class AdvantageController {
 
         try {
             Advantage createdAdvantage = advantageService.createAdvantage(creationDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdAdvantage);
+            Map<String, Object> successResponse = new HashMap<>();
+            successResponse.put("message", "Advantage created successfully");
+            successResponse.put("advantage", createdAdvantage);
+            return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
         } catch (RuntimeException e) {
-            // TODO: More specific exception handling (e.g., CompanyNotFoundException)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
+
+    @DeleteMapping("/{advantageId}")
+    public ResponseEntity<?> deleteAdvantage(@PathVariable Long advantageId) {
+        try {
+            advantageService.deleteAdvantage(advantageId);
+            Map<String, String> successResponse = new HashMap<>();
+            successResponse.put("message", "Advantage deleted successfully");
+            return ResponseEntity.ok(successResponse);
+        } catch (RuntimeException e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
      private Map<String, String> getValidationErrors(BindingResult bindingResult) {
-        return bindingResult.getFieldErrors().stream()
-                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+        Map<String, String> errors = new HashMap<>();
+        
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            String field = fieldError.getField();
+            String message = fieldError.getDefaultMessage();
+            
+            if (errors.containsKey(field)) {
+                // Se já existe um erro para este campo, concatena as mensagens
+                errors.put(field, errors.get(field) + "; " + message);
+            } else {
+                errors.put(field, message);
+            }
+        }
+        
+        return errors;
     }
 }

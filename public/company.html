@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área da Empresa - Sistema de Moeda</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Área da Empresa</h2>
+        <div id="company-info"></div>
+        
+        <h3>Cadastrar Nova Vantagem</h3>
+        <form id="advantage-form">
+            <input type="text" name="name" placeholder="Nome da Vantagem" required><br>
+            <textarea name="description" placeholder="Descrição da Vantagem" required></textarea><br>
+            <input type="url" name="imageUrl" placeholder="URL da Imagem" value="https://dummyimage.com/600x400/000/fff" required><br>
+            <input type="number" name="costInCoins" min="1" step="0.01" placeholder="Custo em Moedas" required><br>
+            <button type="submit">Cadastrar Vantagem</button>
+        </form>
+        <div id="advantage-message" class="form-message"></div>
+        
+        <h3>Suas Vantagens Cadastradas</h3>
+        <ul id="company-advantages-list"></ul>
+        
+        <h3>Histórico de Transações</h3>
+        <ul id="transaction-list"></ul>
+        
+        <div style="margin-top:16px;">
+            <button id="logout-btn">Sair</button>
+        </div>
+    </div>
+    <script src="assets/js/company.js"></script>
+</body>
+</html> 

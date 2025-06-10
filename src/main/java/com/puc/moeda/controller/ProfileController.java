@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -28,8 +30,9 @@ public class ProfileController {
             Student student = profileService.getStudentProfile(studentId);
             return ResponseEntity.ok(student);
         } catch (RuntimeException e) {
-            // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
@@ -39,8 +42,9 @@ public class ProfileController {
             Professor professor = profileService.getProfessorProfile(professorId);
             return ResponseEntity.ok(professor);
         } catch (RuntimeException e) {
-            // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
@@ -50,8 +54,9 @@ public class ProfileController {
             Company company = profileService.getCompanyProfile(companyId);
             return ResponseEntity.ok(company);
         } catch (RuntimeException e) {
-            // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
@@ -61,8 +66,9 @@ public class ProfileController {
             List<Transaction> transactions = profileService.getStudentTransactionHistory(studentId);
             return ResponseEntity.ok(transactions);
         } catch (RuntimeException e) {
-            // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
@@ -72,8 +78,9 @@ public class ProfileController {
             List<Transaction> transactions = profileService.getProfessorTransactionHistory(professorId);
             return ResponseEntity.ok(transactions);
         } catch (RuntimeException e) {
-            // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
@@ -83,8 +90,9 @@ public class ProfileController {
             List<Transaction> transactions = profileService.getCompanyTransactionHistory(companyId);
             return ResponseEntity.ok(transactions);
         } catch (RuntimeException e) {
-            // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
@@ -94,7 +102,9 @@ public class ProfileController {
             List<Student> students = profileService.getAllStudents();
             return ResponseEntity.ok(students);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 }

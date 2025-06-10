@@ -33,10 +33,13 @@ public class RegistrationController {
         }
         try {
             registrationService.registerStudent(registrationDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Student registered successfully");
+            Map<String, String> successResponse = new HashMap<>();
+            successResponse.put("message", "Student registered successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
         } catch (RuntimeException e) {
-            // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 
@@ -47,10 +50,13 @@ public class RegistrationController {
         }
         try {
             registrationService.registerProfessor(registrationDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Professor registered successfully");
+            Map<String, String> successResponse = new HashMap<>();
+            successResponse.put("message", "Professor registered successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
         } catch (RuntimeException e) {
-            // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 
@@ -61,15 +67,31 @@ public class RegistrationController {
         }
         try {
             registrationService.registerCompany(registrationDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Company registered successfully");
+            Map<String, String> successResponse = new HashMap<>();
+            successResponse.put("message", "Company registered successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
         } catch (RuntimeException e) {
-            // TODO: More specific exception handling
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 
     private Map<String, String> getValidationErrors(BindingResult bindingResult) {
-        return bindingResult.getFieldErrors().stream()
-                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+        Map<String, String> errors = new HashMap<>();
+        
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            String field = fieldError.getField();
+            String message = fieldError.getDefaultMessage();
+            
+            if (errors.containsKey(field)) {
+                // Se já existe um erro para este campo, concatena as mensagens
+                errors.put(field, errors.get(field) + "; " + message);
+            } else {
+                errors.put(field, message);
+            }
+        }
+        
+        return errors;
     }
 }

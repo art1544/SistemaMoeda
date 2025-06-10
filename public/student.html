@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Estudante - Sistema de Moeda</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Área do Estudante</h2>
+        <div id="student-info"></div>
+        
+        <h3>Alterar Saldo (Para Testes)</h3>
+        <form id="balance-form">
+            <input type="number" name="amount" min="0" step="0.01" placeholder="Novo saldo" required><br>
+            <button type="submit">Alterar Saldo</button>
+        </form>
+        <div id="balance-message" class="form-message"></div>
+        
+        <h3>Vantagens Disponíveis</h3>
+        <ul id="advantage-list"></ul>
+        <div id="redeem-message" class="form-message"></div>
+        
+        <h3>Verificar Código de Resgate</h3>
+        <form id="verify-form">
+            <input type="text" name="code" placeholder="Código de resgate" required><br>
+            <button type="submit">Verificar</button>
+        </form>
+        <div id="verify-message" class="form-message"></div>
+        
+        <h3>Histórico de Transações</h3>
+        <ul id="transaction-list"></ul>
+        <div style="margin-top:16px;">
+            <button id="logout-btn">Sair</button>
+        </div>
+    </div>
+    <script src="assets/js/student.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Sistema de Moeda</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Cadastro</h2>
+        <div class="register-tabs">
+            <button type="button" class="tab-btn" data-type="student">Estudante</button>
+            <button type="button" class="tab-btn" data-type="professor">Professor</button>
+            <button type="button" class="tab-btn" data-type="company">Empresa</button>
+        </div>
+        <form id="register-student-form" class="register-form">
+            <input type="text" name="name" placeholder="Nome" required><br>
+            <input type="email" name="email" placeholder="E-mail" required><br>
+            <input type="text" name="cpf" placeholder="CPF" required><br>
+            <input type="text" name="rg" placeholder="RG" required><br>
+            <input type="text" name="address" placeholder="Endereço" required><br>
+            <input type="number" name="institutionId" placeholder="ID da Instituição" required><br>
+            <input type="text" name="course" placeholder="Curso" required><br>
+            <input type="password" name="password" placeholder="Senha" required><br>
+            <input type="password" name="confirmPassword" placeholder="Confirmar Senha" required><br>
+            <button type="submit">Cadastrar Estudante</button>
+            <div class="register-message"></div>
+        </form>
+        <form id="register-professor-form" class="register-form" style="display:none;">
+            <input type="text" name="name" placeholder="Nome" required><br>
+            <input type="text" name="cpf" placeholder="CPF" required><br>
+            <input type="text" name="department" placeholder="Departamento" required><br>
+            <input type="number" name="institutionId" placeholder="ID da Instituição" required><br>
+            <input type="email" name="email" placeholder="E-mail" required><br>
+            <input type="password" name="password" placeholder="Senha" required><br>
+            <button type="submit">Cadastrar Professor</button>
+            <div class="register-message"></div>
+        </form>
+        <form id="register-company-form" class="register-form" style="display:none;">
+            <input type="text" name="name" placeholder="Nome da Empresa" required><br>
+            <input type="email" name="email" placeholder="E-mail" required><br>
+            <input type="password" name="password" placeholder="Senha" required><br>
+            <button type="submit">Cadastrar Empresa</button>
+            <div class="register-message"></div>
+        </form>
+        <div style="margin-top:16px;">
+            <a href="login.html">Já tenho conta</a> |
+            <a href="index.html">Voltar</a>
+        </div>
+    </div>
+    <script src="assets/js/register.js"></script>
+</body>
+</html>
