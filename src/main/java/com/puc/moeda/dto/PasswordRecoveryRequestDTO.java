@@ -9,8 +9,6 @@ public class PasswordRecoveryRequestDTO {
     @ValidEmail
     private String email;
 
-    // Getters and setters
-
     public String getEmail() {
         return email;
     }

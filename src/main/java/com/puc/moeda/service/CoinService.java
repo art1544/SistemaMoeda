@@ -37,9 +37,6 @@ public class CoinService {
     @Autowired
     private AdvantageRepository advantageRepository;
 
-    @Autowired
-    private EmailService emailService;
-
     @Transactional
     public void transferCoins(Long professorId, TransferRequestDTO transferRequest) {
         Professor professor = professorRepository.findById(professorId)
@@ -54,15 +51,12 @@ public class CoinService {
             throw new InsufficientBalanceException("Professor has insufficient balance to transfer " + amount + " coins.");
         }
 
-        // Deduct from professor
         professor.setCoinBalance(professor.getCoinBalance().subtract(amount));
         professorRepository.save(professor);
 
-        // Add to student
         student.setCoinBalance(student.getCoinBalance().add(amount));
         studentRepository.save(student);
 
-        // Record transaction
         Transaction transaction = new Transaction();
         transaction.setSenderProfessor(professor);
         transaction.setReceiverStudent(student);
@@ -87,11 +81,9 @@ public class CoinService {
             throw new InsufficientBalanceException("Student has insufficient balance to redeem advantage: " + advantage.getName());
         }
 
-        // Deduct from student
         student.setCoinBalance(student.getCoinBalance().subtract(cost));
         studentRepository.save(student);
 
-        // Record transaction (student to company)
         Transaction transaction = new Transaction();
         transaction.setSenderStudent(student);
         transaction.setReceiverCompany(advantage.getCompany());
@@ -99,9 +91,8 @@ public class CoinService {
         transaction.setReason("Resgate: " + advantage.getName());
         transaction.setTimestamp(LocalDateTime.now());
         transaction.setAdvantage(advantage);
-        transaction.setRedemptionCode(UUID.randomUUID().toString()); // Generate and save the code
-        transaction.setUsed(false); // Mark as not used initially
-        // usedAt is null initially
+        transaction.setRedemptionCode(UUID.randomUUID().toString());
+        transaction.setUsed(false);
         Transaction savedTransaction = transactionRepository.save(transaction);
 
         return savedTransaction;
@@ -121,9 +112,6 @@ public class CoinService {
             throw new RedemptionCodeAlreadyUsedException("Redemption code already used: " + redemptionCode);
         }
 
-        // TODO: Add check for redemption code expiration if needed (e.g., add expiry date to Transaction)
-
-        // Mark the transaction as used
         transaction.setUsed(true);
         transaction.setUsedAt(LocalDateTime.now());
         return transactionRepository.save(transaction);

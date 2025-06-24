@@ -7,7 +7,6 @@ public class RedeemAdvantageDTO {
     @NotNull(message = "O ID da vantagem não pode ser nulo")
     private Long advantageId;
 
-    // Getters and setters
     public Long getAdvantageId() {
         return advantageId;
     }

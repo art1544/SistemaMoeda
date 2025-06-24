@@ -17,7 +17,6 @@ public class CompanyRegistrationDTO {
     @ValidPassword
     private String password;
 
-    // Getters and setters
     public String getName() {
         return name;
     }

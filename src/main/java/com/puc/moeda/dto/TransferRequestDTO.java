@@ -17,7 +17,7 @@ public class TransferRequestDTO {
     @NotBlank(message = "O motivo da transferência não pode estar vazio")
     private String reason;
 
-    // Getters and setters
+
     public Long getStudentId() {
         return studentId;
     }

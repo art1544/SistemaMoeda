@@ -35,14 +35,14 @@ public class RegistrationService {
 
     public Student registerStudent(StudentRegistrationDTO registrationDTO) {
         if (studentRepository.findByEmail(registrationDTO.getEmail()).isPresent()) {
-            throw new RuntimeException("Email já cadastrado para um aluno"); // TODO: Custom exception
+            throw new RuntimeException("Email já cadastrado para um aluno");
         }
         if (studentRepository.findByCpf(registrationDTO.getCpf()).isPresent()) {
-             throw new RuntimeException("CPF já cadastrado para um aluno"); // TODO: Custom exception
+             throw new RuntimeException("CPF já cadastrado para um aluno");
         }
 
         Institution institution = institutionRepository.findById(registrationDTO.getInstitutionId())
-                .orElseThrow(() -> new RuntimeException("Institution not found")); // TODO: Custom exception
+                .orElseThrow(() -> new RuntimeException("Institution not found"));
 
         Student student = new Student();
         student.setName(registrationDTO.getName());
@@ -59,14 +59,14 @@ public class RegistrationService {
 
     public Professor registerProfessor(ProfessorRegistrationDTO registrationDTO) {
          if (professorRepository.findByEmail(registrationDTO.getEmail()).isPresent()) {
-            throw new RuntimeException("Email já cadastrado para um professor"); // TODO: Custom exception
+            throw new RuntimeException("Email já cadastrado para um professor");
         }
         if (professorRepository.findByCpf(registrationDTO.getCpf()).isPresent()) {
-             throw new RuntimeException("CPF já cadastrado para um professor"); // TODO: Custom exception
+             throw new RuntimeException("CPF já cadastrado para um professor");
         }
 
         Institution institution = institutionRepository.findById(registrationDTO.getInstitutionId())
-                .orElseThrow(() -> new RuntimeException("Institution not found")); // TODO: Custom exception
+                .orElseThrow(() -> new RuntimeException("Institution not found"));
 
         Professor professor = new Professor();
         professor.setName(registrationDTO.getName());
@@ -81,7 +81,7 @@ public class RegistrationService {
 
     public Company registerCompany(CompanyRegistrationDTO registrationDTO) {
          if (companyRepository.findByEmail(registrationDTO.getEmail()).isPresent()) {
-            throw new RuntimeException("Email já cadastrado para uma empresa"); // TODO: Custom exception
+            throw new RuntimeException("Email já cadastrado para uma empresa");
         }
 
         Company company = new Company();

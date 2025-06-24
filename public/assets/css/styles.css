@@ -1,136 +1,600 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f5f6fa;
-    margin: 0;
-    padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #eceff4;
+  min-height: 100vh;
+  color: #2d3142;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.container {
-    max-width: 800px;
-    margin: 60px auto;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    padding: 32px 24px 24px 24px;
-    text-align: center;
+
+/* Container centralizado com sombra e borda arredondada */
+.container, .main-container, .form-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.10);
+  padding: 40px 32px;
+  margin: 40px auto;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
 }
-.welcome-options {
-    margin-top: 32px;
+
+/* Títulos principais */
+h1, h2, h3 {
+  color: #2d3142;
+  font-weight: 700;
+  margin-bottom: 18px;
 }
-button {
-    background: #1976d2;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 12px 32px;
-    margin: 8px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: background 0.2s;
+
+h1 {
+  font-size: 2rem;
 }
-button:hover {
-    background: #125ea2;
+h2 {
+  font-size: 1.5rem;
 }
-.form-message {
-    margin: 12px 0 0 0;
-    font-size: 1em;
-    min-height: 1.2em;
+h3 {
+  font-size: 1.2rem;
 }
-.register-tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 16px;
+
+/* Subtítulo/descritivo */
+.subtitle, .description, .form-desc {
+  color: #6b7280;
+  font-size: 1rem;
+  margin-bottom: 18px;
 }
-.tab-btn {
-    flex: 1;
-    background: #e3eafc;
-    color: #1976d2;
-    border: none;
-    border-radius: 4px 4px 0 0;
-    padding: 10px 0;
-    margin: 0 2px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.2s;
+
+/* Inputs */
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #cfd8dc;
+  border-radius: 8px;
+  background: #f7fafc;
+  font-size: 1rem;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
 }
-.tab-btn:hover, .tab-btn.active {
-    background: #1976d2;
-    color: #fff;
+input:focus, select:focus {
+  border-color: #7b8fa1;
+  outline: none;
 }
-.register-form {
-    display: block;
-    margin-bottom: 0;
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
-.register-form input {
-    width: 90%;
-    margin: 6px 0;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
+input[type="number"] {
+  -moz-appearance: textfield;
 }
-.register-form button {
+
+/* Botões principais */
+button, input[type="submit"] {
+  background: #7b8fa1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+  transition: background 0.2s, transform 0.1s;
+  width: 100%;
+}
+button:hover, input[type="submit"]:hover {
+  background: #4b5563;
+  transform: translateY(-2px);
+}
+
+/* Links abaixo dos formulários */
+.form-links, .links {
+  margin-top: 18px;
+  font-size: 0.95rem;
+  color: #6b7280;
+  text-align: center;
+}
+.form-links a, .links a {
+  color: #7b8fa1;
+  text-decoration: none;
+  margin: 0 4px;
+  transition: color 0.2s;
+}
+.form-links a:hover, .links a:hover {
+  color: #4b5563;
+}
+
+/* Mensagem de erro/sucesso */
+.form-message, .register-message {
+  color: #d32f2f;
+  font-size: 0.97rem;
+  min-height: 20px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+/* Dashboard/Saldo */
+.balance {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2d3142;
+  margin-bottom: 8px;
+}
+.balance-label {
+  color: #6b7280;
+  font-size: 1rem;
+  margin-bottom: 24px;
+}
+
+/* Listas e histórico */
+.list, .history-list {
+  background: #f7fafc;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(44, 62, 80, 0.06);
+  border: 1.2px solid #e5e7eb;
+  padding: 0;
+  margin: 0 0 18px 0;
+  list-style: none;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.list li, .history-list li {
+  padding: 12px 18px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #2d3142;
+  font-size: 1rem;
+}
+.list li:last-child, .history-list li:last-child {
+  border-bottom: none;
+}
+
+/* Seção de vantagens ocupando toda a largura */
+.advantages-full {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0 0 32px 0;
+  background: transparent;
+}
+.advantages-full h3 {
+  margin-bottom: 24px;
+  font-size: 2rem;
+  color: #2d3142;
+  font-weight: 700;
+}
+
+.rewards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+
+.reward-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(44, 62, 80, 0.10);
+  padding: 24px 18px;
+  text-align: center;
+  width: 280px;
+  min-width: 220px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.reward-card .reward-img {
+  width: 90px;
+  height: 90px;
+  background: #e5e7eb;
+  border-radius: 50%;
+  margin-bottom: 18px;
+}
+.reward-card h4 {
+  color: #2d3142;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.reward-card p {
+  color: #6b7280;
+  font-size: 0.97rem;
+  margin-bottom: 16px;
+}
+.reward-card .reward-value {
+  color: #2d3142;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.reward-card button {
+  background: #7b8fa1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 0;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+.reward-card button:hover {
+  background: #4b5563;
+}
+
+/* Navegação superior (header) */
+.header, nav, .navbar {
+  width: 100vw;
+  background: #eceff4;
+  padding: 18px 0 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.04);
+}
+.header .logo, .navbar .logo {
+  margin-right: auto;
+  margin-left: 32px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #7b8fa1;
+  letter-spacing: 1px;
+}
+.header a, .navbar a {
+  color: #2d3142;
+  text-decoration: none;
+  font-size: 1rem;
+  margin: 0 10px;
+  transition: color 0.2s;
+}
+.header a:hover, .navbar a:hover {
+  color: #7b8fa1;
+}
+.header .active, .navbar .active {
+  color: #7b8fa1;
+  font-weight: 600;
+  border-bottom: 2px solid #7b8fa1;
+}
+
+/* Ajuste para espaçamento do topo devido ao header fixo */
+.page-content {
+  margin-top: 70px;
+}
+
+/* Responsividade básica */
+@media (max-width: 600px) {
+  .container, .main-container, .form-container {
+    padding: 18px 6px;
+    max-width: 98vw;
+  }
+  .rewards {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  .header, nav, .navbar {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 0 6px 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .rewards {
+    gap: 18px;
+    padding: 0 8px;
+  }
+  .reward-card {
+    width: 98vw;
+    max-width: 98vw;
+    min-width: unset;
+  }
+}
+
+.center-section {
+  max-width: 420px;
+  margin: 32px auto 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.10);
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.center-section header h2 {
+  margin-bottom: 12px;
+}
+
+.center-section + .advantages-full {
+  margin-top: 0;
+}
+
+@media (max-width: 600px) {
+  .center-section {
+    max-width: 98vw;
+    padding: 16px 4px;
+  }
+}
+
+/* --- Estilo específico para a tela da empresa (company.html) --- */
+.company-main {
+  background: #e9ecf3;
+  min-height: 100vh;
+  padding: 0;
+}
+.company-container {
+  max-width: 900px;
+  margin: 60px auto 0 auto;
+  background: #f5f7fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44,62,80,0.08);
+  padding: 48px 40px 32px 40px;
+}
+.company-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2d3142;
+  margin-bottom: 8px;
+  text-align: left;
+}
+.company-desc {
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin-bottom: 32px;
+  text-align: left;
+}
+#advantage-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+.adv-fields {
+  flex: 2 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.adv-fields-row {
+  display: flex;
+  gap: 12px;
+}
+.adv-fields-row input {
+  flex: 1;
+}
+.adv-desc-img {
+  display: flex;
+  gap: 18px;
+  flex: 2 1 420px;
+}
+.adv-desc {
+  flex: 2 1 220px;
+}
+.adv-img {
+  flex: 1 1 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.adv-img-preview {
+  width: 140px;
+  height: 140px;
+  background: #e3e7ef;
+  border: 1.5px dashed #bfc7d6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  font-size: 2.5rem;
+  color: #bfc7d6;
+}
+#advantage-form textarea {
+  min-height: 90px;
+  resize: vertical;
+  width: 100%;
+}
+#advantage-form button[type="submit"] {
+  width: 180px;
+  align-self: flex-end;
+  margin-top: 18px;
+  font-size: 1.1rem;
+  background: #49566b;
+  border-radius: 6px;
+  padding: 12px 0;
+}
+#advantage-form button[type="submit"]:hover {
+  background: #2d3142;
+}
+#advantage-form input, #advantage-form textarea {
+  background: #fff;
+  border: 1.2px solid #cfd8dc;
+  border-radius: 6px;
+  font-size: 1rem;
+  padding: 10px 12px;
+  margin-bottom: 0;
+}
+#advantage-form input[type="file"] {
+  padding: 0;
+  border: none;
+  background: none;
+}
+.add-img-btn {
+  background: #e3e7ef;
+  color: #49566b;
+  border: 1px solid #bfc7d6;
+  border-radius: 6px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  margin-top: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.add-img-btn:hover {
+  background: #d1d7e6;
+}
+@media (max-width: 900px) {
+  .company-container {
+    padding: 18px 4vw;
+  }
+  #advantage-form {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .adv-desc-img {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .adv-img-preview {
+    width: 100px;
+    height: 100px;
+  }
+  #advantage-form button[type="submit"] {
     width: 100%;
     margin-top: 10px;
+  }
 }
 
-/* Estilos específicos para a empresa */
-#advantage-form {
-    text-align: left;
-    margin: 20px 0;
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background: #f9f9f9;
+/* --- Estilo específico para a tela do professor (professor.html) --- */
+.prof-main {
+  background: #f5f7fa;
+  min-height: 100vh;
+  padding: 0;
 }
-
-#advantage-form input,
-#advantage-form textarea {
-    width: 100%;
-    margin: 8px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box;
+.prof-container {
+  max-width: 1200px;
+  margin: 40px auto 0 auto;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0 32px 32px 32px;
 }
-
-#advantage-form textarea {
-    height: 80px;
-    resize: vertical;
+.professor-dashboard {
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-top: 48px;
 }
-
-#advantage-form button {
-    width: 100%;
-    margin-top: 15px;
-    background: #4caf50;
+.prof-balance {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 32px;
 }
-
-#advantage-form button:hover {
-    background: #45a049;
+.prof-balance-value {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: #49566b;
+  margin-bottom: 8px;
 }
-
-#company-advantages-list li {
-    text-align: left;
-    margin: 15px 0;
-    padding: 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background: #f9f9f9;
+.prof-balance-label {
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin-bottom: 32px;
 }
-
-#company-advantages-list button {
-    background: #f44336;
-    margin: 5px 0;
+.prof-transfer-section {
+  flex: 2 1 420px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44,62,80,0.08);
+  padding: 40px 32px 32px 32px;
+  margin-bottom: 32px;
 }
-
-#company-advantages-list button:hover {
-    background: #da190b;
+.prof-transfer-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3142;
+  margin-bottom: 24px;
 }
-
-#transaction-list li {
-    text-align: left;
-    margin: 8px 0;
-    padding: 10px;
-    border-left: 3px solid #1976d2;
-    background: #f5f5f5;
+#transfer-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: flex-end;
+  margin-bottom: 18px;
+}
+#transfer-form select, #transfer-form input[type="number"], #transfer-form input[type="text"] {
+  flex: 1 1 180px;
+  min-width: 140px;
+  margin-bottom: 0;
+}
+#transfer-form button[type="submit"] {
+  width: 160px;
+  background: #49566b;
+  border-radius: 6px;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  margin-left: 0;
+}
+#transfer-form button[type="submit"]:hover {
+  background: #2d3142;
+}
+.prof-history-section {
+  flex: 1 1 320px;
+  background: none;
+  padding: 0;
+}
+.prof-history-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3142;
+  margin-bottom: 24px;
+}
+.prof-history-list {
+  list-style: decimal inside;
+  color: #49566b;
+  font-size: 1.1rem;
+  padding-left: 0;
+  margin: 0;
+}
+.prof-history-list li {
+  margin-bottom: 8px;
+  color: #6b7280;
+}
+@media (max-width: 900px) {
+  .professor-dashboard {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .prof-transfer-section, .prof-history-section {
+    padding: 18px 4vw;
+    margin-bottom: 18px;
+  }
+  .prof-balance {
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .prof-balance-value {
+    font-size: 2.2rem;
+  }
+  .prof-history-title, .prof-transfer-title {
+    font-size: 1.3rem;
+  }
 }

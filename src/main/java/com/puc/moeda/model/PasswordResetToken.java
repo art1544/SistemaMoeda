@@ -31,8 +31,6 @@ public class PasswordResetToken {
 
     private LocalDateTime expiryDate;
 
-    // Getters and setters
-
     public Long getId() {
         return id;
     }

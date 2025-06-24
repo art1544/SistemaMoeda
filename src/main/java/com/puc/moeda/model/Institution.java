@@ -17,7 +17,7 @@ public class Institution {
     private String phone;
     private String email;
 
-    // Getters and setters
+
     public Long getId() {
         return id;
     }

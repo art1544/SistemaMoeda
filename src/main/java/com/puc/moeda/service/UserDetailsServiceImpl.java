@@ -35,7 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Student student = studentOptional.get();
             return new org.springframework.security.core.userdetails.User(
                     student.getEmail(),
-                    student.getPassword(), // TODO: Use encoded password
+                    student.getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_STUDENT"))
             );
         }
@@ -45,7 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Professor professor = professorOptional.get();
             return new org.springframework.security.core.userdetails.User(
                     professor.getEmail(),
-                    professor.getPassword(), // TODO: Use encoded password
+                    professor.getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_PROFESSOR"))
             );
         }
@@ -55,7 +55,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Company company = companyOptional.get();
             return new org.springframework.security.core.userdetails.User(
                     company.getEmail(),
-                    company.getPassword(), // TODO: Use encoded password
+                    company.getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_COMPANY"))
             );
         }

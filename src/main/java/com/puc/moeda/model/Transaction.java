@@ -22,7 +22,7 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "sender_student_id")
-    private Student senderStudent; // For student redeeming advantage
+    private Student senderStudent;
 
     @ManyToOne
     @JoinColumn(name = "receiver_student_id")
@@ -30,7 +30,7 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "receiver_company_id")
-    private Company receiverCompany; // For company receiving coins from student redemption
+    private Company receiverCompany;
 
     private BigDecimal amount;
     private String reason;
@@ -38,13 +38,12 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "advantage_id")
-    private Advantage advantage; // For redemption transactions
+    private Advantage advantage;
 
-    private String redemptionCode; // New field for redemption code
-    private boolean isUsed = false; // New field to track if the code has been used
-    private LocalDateTime usedAt; // New field to record when the code was used
+    private String redemptionCode;
+    private boolean isUsed = false;
+    private LocalDateTime usedAt;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

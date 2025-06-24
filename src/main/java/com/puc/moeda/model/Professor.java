@@ -21,11 +21,10 @@ public class Professor {
     @ManyToOne
     private Institution institution;
 
-    private String email; // Assuming email is used for login
+    private String email;
     private String password;
-    private BigDecimal coinBalance = BigDecimal.ZERO; // Initial balance can be set via logic
+    private BigDecimal coinBalance = BigDecimal.ZERO;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

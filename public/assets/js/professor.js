@@ -15,6 +15,7 @@ const transferForm = document.getElementById('transfer-form');
 const transferMsg = document.getElementById('transfer-message');
 const balanceForm = document.getElementById('balance-form');
 const balanceMsg = document.getElementById('balance-message');
+const profBalanceValue = document.getElementById('prof-balance-value');
 
 // Verifica se o usuário está logado e é um professor
 if (!user.id || !user.roles || !user.roles.some(r => (r.authority || r) === 'ROLE_PROFESSOR')) {
@@ -27,11 +28,18 @@ function updateProfessorInfo() {
     fetch(`/api/profile/professor/${user.id}`)
         .then(r => r.json())
         .then(data => {
-            professorInfo.textContent = `Bem-vindo, ${data.name || user.username || ''} | Saldo: ${data.coinBalance || 0}`;
+            // Atualiza saldo grande
+            if (profBalanceValue) {
+                profBalanceValue.textContent = 'M$ ' + (data.coinBalance || 0);
+            }
+            // Atualiza info textual se quiser
+            if (professorInfo) {
+                professorInfo.textContent = `Bem-vindo, ${data.name || user.username || ''} | Saldo: ${data.coinBalance || 0}`;
+            }
         })
         .catch(err => {
-            console.error('Erro ao carregar dados do professor:', err);
-            professorInfo.textContent = 'Erro ao carregar dados do professor';
+            if (profBalanceValue) profBalanceValue.textContent = 'M$ 0';
+            if (professorInfo) professorInfo.textContent = 'Erro ao carregar dados do professor';
         });
 }
 
@@ -52,7 +60,7 @@ fetch('/api/profile/students')
 // Lista histórico de transações
 function loadTransactions() {
     transactionList.innerHTML = '<li>Carregando...</li>';
-    fetch(`/api/profile/professor/${user.id}/transactions`)
+    fetch(`/api/coins/professor/${user.id}/transactions`)
         .then(r => r.json())
         .then(transactions => {
             if (!transactions.length) {
@@ -164,4 +172,10 @@ transferForm.onsubmit = async function(e) {
         transferMsg.style.color = 'red';
         transferMsg.textContent = 'Erro ao transferir moedas.';
     }
+};
+
+// Inicialização
+window.onload = function() {
+    updateProfessorInfo();
+    loadTransactions();
 };

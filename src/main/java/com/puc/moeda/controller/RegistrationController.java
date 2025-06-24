@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Map;   
 
 @RestController
 @RequestMapping("/api/register")
@@ -85,7 +84,6 @@ public class RegistrationController {
             String message = fieldError.getDefaultMessage();
             
             if (errors.containsKey(field)) {
-                // Se já existe um erro para este campo, concatena as mensagens
                 errors.put(field, errors.get(field) + "; " + message);
             } else {
                 errors.put(field, message);

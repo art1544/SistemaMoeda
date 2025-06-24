@@ -1,57 +1,59 @@
 // register.js
 
-// Alternância de abas
-const tabBtns = document.querySelectorAll('.tab-btn');
-const forms = {
-    student: document.getElementById('register-student-form'),
-    professor: document.getElementById('register-professor-form'),
-    company: document.getElementById('register-company-form')
-};
-tabBtns.forEach(btn => {
-    btn.onclick = () => {
-        Object.values(forms).forEach(f => f.style.display = 'none');
-        forms[btn.dataset.type].style.display = '';
-    };
-});
-// Exibe estudante por padrão
-forms.student.style.display = '';
+const userTypeSelect = document.getElementById('user-type-select');
+const fieldsStudent = document.getElementById('fields-student');
+const fieldsProfessor = document.getElementById('fields-professor');
+const fieldsCompany = document.getElementById('fields-company');
+const form = document.getElementById('register-form');
+const msg = form.querySelector('.register-message');
 
-// Registro de estudante
-forms.student.onsubmit = async function(e) {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(this));
-    const msg = this.querySelector('.register-message');
-    msg.textContent = 'Enviando...';
-    msg.style.color = '#333';
-    try {
-        const res = await fetch('/api/register/student', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        const result = await res.json().catch(() => ({}));
-        if (res.ok) {
-            msg.style.color = 'green';
-            msg.textContent = 'Estudante registrado com sucesso!';
-            this.reset();
+function showFields(type) {
+    fieldsStudent.style.display = type === 'student' ? '' : 'none';
+    fieldsProfessor.style.display = type === 'professor' ? '' : 'none';
+    fieldsCompany.style.display = type === 'company' ? '' : 'none';
+}
+
+userTypeSelect.addEventListener('change', function() {
+    showFields(this.value);
+});
+
+// Exibe estudante por padrão
+showFields(userTypeSelect.value);
+
+function getVisibleFieldsData(type) {
+    let data = {};
+    let container = null;
+    if (type === 'student') container = fieldsStudent;
+    if (type === 'professor') container = fieldsProfessor;
+    if (type === 'company') container = fieldsCompany;
+    if (!container) return {};
+    const inputs = container.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        if (input.type === 'checkbox') {
+            data[input.name] = input.checked;
         } else {
-            msg.style.color = 'red';
-            msg.textContent = typeof result === 'object' ? Object.values(result).join(' | ') : (result || 'Erro no registro');
+            data[input.name] = input.value;
         }
-    } catch {
-        msg.style.color = 'red';
-        msg.textContent = 'Erro ao registrar.';
-    }
-};
-// Registro de professor
-forms.professor.onsubmit = async function(e) {
+    });
+    return data;
+}
+
+form.onsubmit = async function(e) {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(this));
-    const msg = this.querySelector('.register-message');
     msg.textContent = 'Enviando...';
     msg.style.color = '#333';
+    const type = userTypeSelect.value;
+    let data = getVisibleFieldsData(type);
+    let endpoint = '';
+    if (type === 'student') {
+        endpoint = '/api/register/student';
+    } else if (type === 'professor') {
+        endpoint = '/api/register/professor';
+    } else if (type === 'company') {
+        endpoint = '/api/register/company';
+    }
     try {
-        const res = await fetch('/api/register/professor', {
+        const res = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -59,35 +61,9 @@ forms.professor.onsubmit = async function(e) {
         const result = await res.json().catch(() => ({}));
         if (res.ok) {
             msg.style.color = 'green';
-            msg.textContent = 'Professor registrado com sucesso!';
-            this.reset();
-        } else {
-            msg.style.color = 'red';
-            msg.textContent = typeof result === 'object' ? Object.values(result).join(' | ') : (result || 'Erro no registro');
-        }
-    } catch {
-        msg.style.color = 'red';
-        msg.textContent = 'Erro ao registrar.';
-    }
-};
-// Registro de empresa
-forms.company.onsubmit = async function(e) {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(this));
-    const msg = this.querySelector('.register-message');
-    msg.textContent = 'Enviando...';
-    msg.style.color = '#333';
-    try {
-        const res = await fetch('/api/register/company', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        const result = await res.json().catch(() => ({}));
-        if (res.ok) {
-            msg.style.color = 'green';
-            msg.textContent = 'Empresa registrada com sucesso!';
-            this.reset();
+            msg.textContent = (type === 'student' ? 'Estudante' : type === 'professor' ? 'Professor' : 'Empresa') + ' registrado com sucesso!';
+            form.reset();
+            showFields(userTypeSelect.value);
         } else {
             msg.style.color = 'red';
             msg.textContent = typeof result === 'object' ? Object.values(result).join(' | ') : (result || 'Erro no registro');

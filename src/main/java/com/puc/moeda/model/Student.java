@@ -27,7 +27,6 @@ public class Student {
     private String password;
     private BigDecimal coinBalance = BigDecimal.ZERO;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

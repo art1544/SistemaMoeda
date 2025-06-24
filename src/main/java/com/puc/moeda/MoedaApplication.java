@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling // Enable scheduling
+@EnableScheduling
 public class MoedaApplication {
 
 	public static void main(String[] args) {

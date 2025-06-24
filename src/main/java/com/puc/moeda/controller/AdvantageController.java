@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/advantages")
@@ -91,7 +90,6 @@ public class AdvantageController {
             String message = fieldError.getDefaultMessage();
             
             if (errors.containsKey(field)) {
-                // Se já existe um erro para este campo, concatena as mensagens
                 errors.put(field, errors.get(field) + "; " + message);
             } else {
                 errors.put(field, message);

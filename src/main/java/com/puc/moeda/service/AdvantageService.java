@@ -27,7 +27,7 @@ public class AdvantageService {
     @Transactional
     public Advantage createAdvantage(AdvantageCreationDTO creationDTO) {
         Company company = companyRepository.findById(creationDTO.getCompanyId())
-                .orElseThrow(() -> new RuntimeException("Company not found")); // TODO: Custom exception
+                .orElseThrow(() -> new RuntimeException("Company not found"));
 
         Advantage advantage = new Advantage();
         advantage.setName(creationDTO.getName());
@@ -41,22 +41,19 @@ public class AdvantageService {
 
     public List<Advantage> getAdvantagesByCompany(Long companyId) {
         Company company = companyRepository.findById(companyId)
-                .orElseThrow(() -> new RuntimeException("Company not found")); // TODO: Custom exception
+                .orElseThrow(() -> new RuntimeException("Company not found"));
         return advantageRepository.findByCompany(company);
     }
 
     @Transactional
     public Advantage updateAdvantage(Long id, AdvantageCreationDTO updateDTO) {
         Advantage existingAdvantage = advantageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Advantage not found")); // TODO: Custom exception
-
-        // TODO: Add check to ensure the company updating the advantage is the owner
+                .orElseThrow(() -> new RuntimeException("Advantage not found"));
 
         existingAdvantage.setName(updateDTO.getName());
         existingAdvantage.setDescription(updateDTO.getDescription());
         existingAdvantage.setImageUrl(updateDTO.getImageUrl());
         existingAdvantage.setCostInCoins(updateDTO.getCostInCoins());
-        // Note: Company cannot be changed after creation in this model
 
         return advantageRepository.save(existingAdvantage);
     }
@@ -64,9 +61,7 @@ public class AdvantageService {
     @Transactional
     public void deleteAdvantage(Long id) {
         Advantage advantageToDelete = advantageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Advantage not found")); // TODO: Custom exception
-
-         // TODO: Add check to ensure the company deleting the advantage is the owner
+                .orElseThrow(() -> new RuntimeException("Advantage not found"));
 
         advantageRepository.delete(advantageToDelete);
     }

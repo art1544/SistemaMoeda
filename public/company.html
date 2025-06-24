@@ -6,31 +6,48 @@
     <title>Área da Empresa - Sistema de Moeda</title>
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
-    <div class="container">
-        <h2>Área da Empresa</h2>
-        <div id="company-info"></div>
-        
-        <h3>Cadastrar Nova Vantagem</h3>
+<body class="company-main">
+    <div class="company-container">
+        <h2 class="company-title">Cadastrar uma nova Vantagem</h2>
+        <div class="company-desc">Cadastre aqui uma nova vantagem para os estudantes. Preencha os campos abaixo e clique em "Cadastrar".</div>
         <form id="advantage-form">
-            <input type="text" name="name" placeholder="Nome da Vantagem" required><br>
-            <textarea name="description" placeholder="Descrição da Vantagem" required></textarea><br>
-            <input type="url" name="imageUrl" placeholder="URL da Imagem" value="https://dummyimage.com/600x400/000/fff" required><br>
-            <input type="number" name="costInCoins" min="1" step="0.01" placeholder="Custo em Moedas" required><br>
-            <button type="submit">Cadastrar Vantagem</button>
+            <div class="adv-fields">
+                <div class="adv-fields-row">
+                    <input type="text" name="name" placeholder="Nome da Vantagem" >
+                    <input type="number" name="costInCoins" step="0.01" placeholder="Custo em Moedas" >
+                </div>
+                <div class="adv-desc-img">
+                    <textarea name="description" placeholder="Descrição da Vantagem" class="adv-desc" ></textarea>
+                    <div class="adv-img">
+                        <div class="adv-img-preview" id="img-preview">&#10006;</div>
+                        <input type="url" name="imageUrl" id="imageUrl" placeholder="URL da Imagem" style="margin-bottom: 8px;" value="https://dummyimage.com/600x400/000/fff" >
+                        <button type="button" class="add-img-btn" onclick="document.getElementById('imageUrl').focus()">Adicionar Imagem</button>
+                    </div>
+                </div>
+            </div>
+            <button type="submit">Cadastrar</button>
         </form>
         <div id="advantage-message" class="form-message"></div>
-        
         <h3>Suas Vantagens Cadastradas</h3>
         <ul id="company-advantages-list"></ul>
-        
         <h3>Histórico de Transações</h3>
         <ul id="transaction-list"></ul>
-        
         <div style="margin-top:16px;">
             <button id="logout-btn">Sair</button>
         </div>
     </div>
+    <script>
+    // Preview da imagem
+    const imageUrlInput = document.getElementById('imageUrl');
+    const imgPreview = document.getElementById('img-preview');
+    imageUrlInput.addEventListener('input', function() {
+        if (this.value) {
+            imgPreview.innerHTML = `<img src="${this.value}" alt="Prévia" style="max-width:100%;max-height:100%;border-radius:6px;">`;
+        } else {
+            imgPreview.innerHTML = '&#10006;';
+        }
+    });
+    </script>
     <script src="assets/js/company.js"></script>
 </body>
 </html> 

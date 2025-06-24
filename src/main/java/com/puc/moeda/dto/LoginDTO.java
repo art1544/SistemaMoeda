@@ -14,7 +14,6 @@ public class LoginDTO {
     @ValidPassword
     private String password;
 
-    // Getters and setters
     public String getUsernameOrEmail() {
         return usernameOrEmail;
     }

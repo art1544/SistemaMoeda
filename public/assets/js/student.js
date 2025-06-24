@@ -59,21 +59,28 @@ function loadTransactions() {
 
 // Lista vantagens disponíveis
 function loadAdvantages() {
-    advantageList.innerHTML = '<li>Carregando...</li>';
+    // Renderizar como cards
+    advantageList.innerHTML = '<div class="rewards">Carregando...</div>';
     fetch('/api/advantages')
         .then(r => r.json())
         .then(advantages => {
             if (!advantages.length) {
-                advantageList.innerHTML = '<li>Nenhuma vantagem disponível.</li>';
+                advantageList.innerHTML = '<div class="rewards"><div>Nenhuma vantagem disponível.</div></div>';
             } else {
-                advantageList.innerHTML = advantages.map(v =>
-                    `<li>${v.name} - ${v.description} | Custo: ${v.costInCoins} <button onclick="redeemAdvantage(${v.id}, '${v.name.replace(/'/g, '\'')}')">Resgatar</button></li>`
-                ).join('');
+                advantageList.innerHTML = '<div class="rewards">' + advantages.map(v => `
+                    <div class="reward-card">
+                        <div class="reward-img"></div>
+                        <h4>${v.name}</h4>
+                        <p>${v.description}</p>
+                        <div class="reward-value">M$ ${v.costInCoins}</div>
+                        <button onclick="redeemAdvantage(${v.id}, '${v.name.replace(/'/g, '\'')}')">Resgatar</button>
+                    </div>
+                `).join('') + '</div>';
             }
         })
         .catch(err => {
             console.error('Erro ao carregar vantagens:', err);
-            advantageList.innerHTML = '<li>Erro ao carregar vantagens</li>';
+            advantageList.innerHTML = '<div class="rewards"><div>Erro ao carregar vantagens</div></div>';
         });
 }
 

@@ -1,6 +1,5 @@
 package com.puc.moeda.service;
 
-import com.puc.moeda.dto.PasswordRecoveryRequestDTO;
 import com.puc.moeda.dto.PasswordResetDTO;
 import com.puc.moeda.model.Company;
 import com.puc.moeda.model.PasswordResetToken;
@@ -35,9 +34,6 @@ public class PasswordRecoveryService {
     private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
-    private EmailService emailService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -47,15 +43,11 @@ public class PasswordRecoveryService {
         Optional<Company> companyOptional = companyRepository.findByEmail(email);
 
         if (studentOptional.isEmpty() && professorOptional.isEmpty() && companyOptional.isEmpty()) {
-            throw new RuntimeException("User with this email not found"); // TODO: Custom exception
+            throw new RuntimeException("User with this email not found");
         }
 
-        // Delete any existing tokens for this user
-        // TODO: Implement methods in token repository to find by user (student, professor, company)
-        // For now, we'll rely on the one-to-one relationship and save a new one
-
         String token = UUID.randomUUID().toString();
-        LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(30); // Token valid for 30 minutes
+        LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(30);
 
         PasswordResetToken resetToken = new PasswordResetToken();
         resetToken.setToken(token);
@@ -70,15 +62,6 @@ public class PasswordRecoveryService {
         }
 
         passwordResetTokenRepository.save(resetToken);
-
-        // Send email to user with the token link
-        String recoveryLink = "YOUR_FRONTEND_RESET_PASSWORD_URL?token=" + token; // TODO: Configure frontend URL
-        String emailSubject = "Recuperação de Senha - Moeda de Mérito";
-        String emailBody = String.format(
-                "Olá, Você solicitou a recuperação de senha para a sua conta na Moeda de Mérito. Use o link abaixo para redefinir sua senha: %s Este link expirará em 30 minutos. Se você não solicitou esta recuperação, por favor ignore este email.",
-                recoveryLink
-        );
-        emailService.sendSimpleEmail(email, emailSubject, emailBody);
     }
 
     @Transactional
@@ -86,18 +69,15 @@ public class PasswordRecoveryService {
         Optional<PasswordResetToken> tokenOptional = passwordResetTokenRepository.findByToken(resetDTO.getToken());
 
         if (tokenOptional.isEmpty() || tokenOptional.get().getExpiryDate().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Invalid or expired token"); // TODO: Custom exception
+            throw new RuntimeException("Invalid or expired token");
         }
 
         PasswordResetToken resetToken = tokenOptional.get();
 
-        // TODO: Validate new password and confirm password using a validator
         if (!resetDTO.getNewPassword().equals(resetDTO.getConfirmNewPassword())) {
-            throw new RuntimeException("New passwords do not match"); // TODO: Custom exception
+            throw new RuntimeException("New passwords do not match");
         }
-        // TODO: Add password complexity validation for new password
 
-        // Find the user associated with the token
         Student student = resetToken.getStudent();
         Professor professor = resetToken.getProfessor();
         Company company = resetToken.getCompany();
@@ -112,12 +92,9 @@ public class PasswordRecoveryService {
             company.setPassword(passwordEncoder.encode(resetDTO.getNewPassword()));
             companyRepository.save(company);
         } else {
-             throw new RuntimeException("User not found for this token"); // Should not happen if token is valid
+             throw new RuntimeException("User not found for this token");
         }
 
-        // Delete the token after successful reset
         passwordResetTokenRepository.delete(resetToken);
     }
-
-    // TODO: Add a scheduled task to clean up expired tokens from the repository
 }

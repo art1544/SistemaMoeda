@@ -23,7 +23,6 @@ import jakarta.validation.Valid;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -52,13 +51,10 @@ public class AuthController {
         }
 
         try {
-            // Call AuthService to authenticate and get UserDetails
             UserDetails userDetails = authService.authenticateUser(loginDTO);
 
-            // Get additional user information
             Map<String, Object> userInfo = getUserInfo(userDetails.getUsername());
 
-            // Authentication successful, return user info
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Authentication successful");
             response.put("username", userDetails.getUsername());
@@ -83,21 +79,18 @@ public class AuthController {
     private Map<String, Object> getUserInfo(String email) {
         Map<String, Object> userInfo = new HashMap<>();
         
-        // Check if it's a student
         studentRepository.findByEmail(email).ifPresent(student -> {
             userInfo.put("id", student.getId());
             userInfo.put("userType", "STUDENT");
             userInfo.put("name", student.getName());
         });
         
-        // Check if it's a professor
         professorRepository.findByEmail(email).ifPresent(professor -> {
             userInfo.put("id", professor.getId());
             userInfo.put("userType", "PROFESSOR");
             userInfo.put("name", professor.getName());
         });
         
-        // Check if it's a company
         companyRepository.findByEmail(email).ifPresent(company -> {
             userInfo.put("id", company.getId());
             userInfo.put("userType", "COMPANY");
@@ -119,7 +112,6 @@ public class AuthController {
             successResponse.put("message", "Password recovery email sent");
             return ResponseEntity.ok(successResponse);
         } catch (RuntimeException e) {
-             // TODO: More specific exception handling
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
@@ -138,7 +130,6 @@ public class AuthController {
             successResponse.put("message", "Password has been reset successfully");
             return ResponseEntity.ok(successResponse);
         } catch (RuntimeException e) {
-             // TODO: More specific exception handling
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
@@ -153,7 +144,6 @@ public class AuthController {
             String message = fieldError.getDefaultMessage();
             
             if (errors.containsKey(field)) {
-                // Se já existe um erro para este campo, concatena as mensagens
                 errors.put(field, errors.get(field) + "; " + message);
             } else {
                 errors.put(field, message);

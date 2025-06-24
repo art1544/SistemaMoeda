@@ -23,7 +23,6 @@ import jakarta.validation.Valid;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/coins")
@@ -84,7 +83,6 @@ public class CoinController {
 
         try {
             Transaction redeemedTransaction = coinService.redeemAdvantage(studentId, redeemRequest);
-             // Return details of the redeemed transaction, including the code
             return ResponseEntity.ok(redeemedTransaction);
         } catch (StudentNotFoundException e) {
             Map<String, String> errorResponse = new HashMap<>();
@@ -116,7 +114,6 @@ public class CoinController {
 
         try {
             Transaction verifiedTransaction = coinService.verifyRedemptionCode(redemptionCode);
-            // Return details of the verified transaction
             return ResponseEntity.ok(verifiedTransaction);
         } catch (InvalidRedemptionCodeException e) {
             Map<String, String> errorResponse = new HashMap<>();
@@ -240,8 +237,7 @@ public class CoinController {
             String field = fieldError.getField();
             String message = fieldError.getDefaultMessage();
             
-            if (errors.containsKey(field)) {
-                // Se já existe um erro para este campo, concatena as mensagens
+            if (errors.containsKey(field)) {    
                 errors.put(field, errors.get(field) + "; " + message);
             } else {
                 errors.put(field, message);

@@ -8,7 +8,7 @@ import com.puc.moeda.validator.PasswordMatch;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-@PasswordMatch // Apply the custom password match validator at the class level
+@PasswordMatch
 public class StudentRegistrationDTO {
 
     @NotBlank(message = "O campo nome não pode estar vazio")
@@ -41,7 +41,6 @@ public class StudentRegistrationDTO {
     @NotBlank(message = "O campo de confirmação de senha não pode estar vazio")
     private String confirmPassword;
 
-    // Getters and setters
     public String getName() {
         return name;
     }

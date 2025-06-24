@@ -3,7 +3,6 @@ package com.puc.moeda.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -52,10 +51,10 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
             )
             .sessionManagement(session -> session
-                .disable()  // Desabilitar gerenciamento de sessão
+                .disable()
             )
-            .httpBasic(basic -> basic.disable())  // Desabilitar autenticação básica HTTP
-            .formLogin(form -> form.disable());   // Desabilitar formulário de login
+            .httpBasic(basic -> basic.disable())
+            .formLogin(form -> form.disable());
         
         return http.build();
     }

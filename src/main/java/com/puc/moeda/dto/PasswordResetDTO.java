@@ -15,8 +15,6 @@ public class PasswordResetDTO {
     @NotBlank(message = "O campo de confirmação de nova senha não pode estar vazio")
     private String confirmNewPassword;
 
-    // Getters and setters
-
     public String getToken() {
         return token;
     }

@@ -14,7 +14,6 @@ public class AdvantageCreationDTO {
     @NotBlank(message = "A descrição da vantagem não pode estar vazia")
     private String description;
 
-    // Assuming image is handled by a URL for now
     @NotBlank(message = "A URL da imagem não pode estar vazia")
     private String imageUrl;
 
@@ -24,8 +23,6 @@ public class AdvantageCreationDTO {
 
     @NotNull(message = "O ID da empresa não pode ser nulo")
     private Long companyId;
-
-    // Getters and setters
 
     public String getName() {
         return name;

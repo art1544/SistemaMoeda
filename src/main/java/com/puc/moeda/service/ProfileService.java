@@ -26,35 +26,35 @@ public class ProfileService {
     private CompanyRepository companyRepository;
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;    
 
     public Student getStudentProfile(Long studentId) {
         return studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found")); // TODO: Custom exception
+                .orElseThrow(() -> new RuntimeException("Student not found"));
     }
 
     public Professor getProfessorProfile(Long professorId) {
         return professorRepository.findById(professorId)
-                .orElseThrow(() -> new RuntimeException("Professor not found")); // TODO: Custom exception
+                .orElseThrow(() -> new RuntimeException("Professor not found"));
     }
 
     public Company getCompanyProfile(Long companyId) {
         return companyRepository.findById(companyId)
-                .orElseThrow(() -> new RuntimeException("Company not found")); // TODO: Custom exception
+                .orElseThrow(() -> new RuntimeException("Company not found"));
     }
 
     public List<Transaction> getStudentTransactionHistory(Long studentId) {
-        Student student = getStudentProfile(studentId); // Ensure student exists
+        Student student = getStudentProfile(studentId);
         return transactionRepository.findBySenderStudentOrReceiverStudent(student, student);
     }
 
     public List<Transaction> getProfessorTransactionHistory(Long professorId) {
-        Professor professor = getProfessorProfile(professorId); // Ensure professor exists
+        Professor professor = getProfessorProfile(professorId);
         return transactionRepository.findBySenderProfessor(professor);
     }
 
     public List<Transaction> getCompanyTransactionHistory(Long companyId) {
-        Company company = getCompanyProfile(companyId); // Ensure company exists
+        Company company = getCompanyProfile(companyId);
         return transactionRepository.findByReceiverCompany(company);
     }
 

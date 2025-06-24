@@ -13,7 +13,7 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
     @Override
     public boolean isValid(StudentRegistrationDTO studentRegistrationDTO, ConstraintValidatorContext context) {
         if (studentRegistrationDTO.getPassword() == null || studentRegistrationDTO.getConfirmPassword() == null) {
-            return false; // Let @NotBlank handle null or empty
+            return false;
         }
         return studentRegistrationDTO.getPassword().equals(studentRegistrationDTO.getConfirmPassword());
     }

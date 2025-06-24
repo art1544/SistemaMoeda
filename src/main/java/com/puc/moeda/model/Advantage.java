@@ -16,13 +16,12 @@ public class Advantage {
 
     private String name;
     private String description;
-    private String imageUrl; // Assuming storing the URL to the image
+    private String imageUrl;
     private BigDecimal costInCoins;
 
     @ManyToOne
     private Company company;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

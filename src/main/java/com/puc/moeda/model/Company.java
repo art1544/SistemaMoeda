@@ -13,10 +13,9 @@ public class Company {
     private Long id;
 
     private String name;
-    private String email; // Assuming email is used for login
+    private String email;
     private String password;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }
