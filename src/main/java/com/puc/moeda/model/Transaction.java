@@ -8,6 +8,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Transaction {
@@ -32,8 +33,13 @@ public class Transaction {
     @JoinColumn(name = "receiver_company_id")
     private Company receiverCompany;
 
+    @NotNull(message = "O valor não pode ser nulo")
+    @Positive(message = "O valor deve ser positivo")
     private BigDecimal amount;
+
+    @NotBlank(message = "O motivo não pode estar em branco")
     private String reason;
+
     private LocalDateTime timestamp;
 
     @ManyToOne

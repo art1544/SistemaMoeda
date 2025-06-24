@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Professor {
@@ -14,15 +15,28 @@ public class Professor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O nome não pode estar em branco")
     private String name;
+
+    @NotBlank(message = "O CPF não pode estar em branco")
     private String cpf;
+
+    @NotBlank(message = "O departamento não pode estar em branco")
     private String department;
 
     @ManyToOne
+    @NotNull(message = "A instituição não pode ser nula")
     private Institution institution;
 
+    @NotBlank(message = "O email não pode estar em branco")
+    @Email(message = "Email inválido")
     private String email;
+
+    @NotBlank(message = "A senha não pode estar em branco")
+    @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres")
     private String password;
+
+    @PositiveOrZero(message = "O saldo deve ser zero ou positivo")
     private BigDecimal coinBalance = BigDecimal.ZERO;
 
     public Long getId() {

@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Advantage {
@@ -14,12 +15,21 @@ public class Advantage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O nome da vantagem não pode estar em branco")
     private String name;
+
+    @NotBlank(message = "A descrição da vantagem não pode estar vazia")
     private String description;
+
+    @NotBlank(message = "A URL da imagem não pode estar vazia")
     private String imageUrl;
+
+    @NotNull(message = "O custo em moedas não pode ser nulo")
+    @Positive(message = "O custo em moedas deve ser positivo")
     private BigDecimal costInCoins;
 
     @ManyToOne
+    @NotNull(message = "A empresa não pode ser nula")
     private Company company;
 
     public Long getId() {

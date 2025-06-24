@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Institution {
@@ -12,9 +13,17 @@ public class Institution {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O nome não pode estar em branco")
     private String name;
+
+    @NotBlank(message = "O endereço não pode estar em branco")
     private String address;
+
+    @NotBlank(message = "O telefone não pode estar em branco")
     private String phone;
+
+    @NotBlank(message = "O email não pode estar em branco")
+    @Email(message = "Email inválido")
     private String email;
 
 
